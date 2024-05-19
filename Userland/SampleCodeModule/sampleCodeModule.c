@@ -23,7 +23,7 @@ static void help(char** parameters){
 	printf(manual);
 }
 
-void scanCommand(char command, char **parameters, char buffer){
+void scanCommand(char* command, char **parameters, char* buffer){
 	// buffer = "command arg1 arg2"
 	int i, j ,k;
 
