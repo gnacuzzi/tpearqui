@@ -7,6 +7,27 @@
 static const char* allCommands[] = {"dividebyzero", "eliminator", "help", "invalidoperation","lettersize", "time"};
 static void (*commandsFunction[])(char *parameters) = {dividebyzero, eliminator, help, invalidoperation, lettersize, time}; //funciones a hacer
 
+static void dividebyzero(char** parameters){
+	//completar
+}
+
+static void eliminator(char** parameters){
+	//completar
+}
+
+static invalidoperation(char** parameters){
+	//completar
+}
+
+static void lettersize(char** parameters){
+	//completar
+}
+
+static void time(char** parameters){
+	//completar
+}	
+
+
 static void help(char** parameters){
 	if(parameters != 0){
 		printf("Help doesn't need parameters\n");
