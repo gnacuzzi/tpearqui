@@ -1,5 +1,6 @@
 #ifndef USERASM_H
 #define USERASM_H
-void dividebyzero();
+void dividebyzeroexception();
+void invalidoperationexception();
 
 #endif

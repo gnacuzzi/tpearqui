@@ -1,6 +1,11 @@
-GLOBAL dividebyzero
+GLOBAL dividebyzeroexception
+GLOBAL invalidoperationexception
 
-dividebyzero:
+dividebyzeroexception:
     mov raz, 0
     div rax
+    ret
+
+invalidoperationexception:
+	db	0xFF, 0xFF    ;chequear esto
     ret

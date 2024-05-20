@@ -14,15 +14,20 @@ static void dividebyzero(char** parameters){
 		return;
 	}
 
-	divide_by_zero();
+	dividebyzeroexception();
 }
 
 static void eliminator(char** parameters){
 	//completar
 }
 
-static invalidoperation(char** parameters){
-	//completar
+static void invalidoperation(char** parameters){
+	if(parameters != 0){
+		printf("InvalidOperation doesn't need parameters\n");
+		return;
+	}
+
+	invalidoperationexception();
 }
 
 static void lettersize(char** parameters){
