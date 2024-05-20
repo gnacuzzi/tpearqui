@@ -9,5 +9,8 @@ void exceptionDispatcher(int exception) {
 }
 
 static void zero_division() {
-	// Handler para manejar excepcíon
+	clearScreen();
+	//draw_string(400, 50, "TUVISTE UNA ZERO DIVISION", 25, RED, BLACK);
+	//printRegs(); //programar
+	clearScreen();
 }

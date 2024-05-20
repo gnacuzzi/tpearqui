@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <userasm.h>
 
 #define BUFFER_LENGTH 20
 #define MAX_PARAMETERS 1  //todavia no sabemos cuantos parametros se van a enviar como maximo
@@ -8,7 +9,12 @@ static const char* allCommands[] = {"dividebyzero", "eliminator", "help", "inval
 static void (*commandsFunction[])(char *parameters) = {dividebyzero, eliminator, help, invalidoperation, lettersize, time}; //funciones a hacer
 
 static void dividebyzero(char** parameters){
-	//completar
+	if(parameters != 0){
+		printf("DivideByZero doesn't need parameters\n");
+		return;
+	}
+
+	divide_by_zero();
 }
 
 static void eliminator(char** parameters){

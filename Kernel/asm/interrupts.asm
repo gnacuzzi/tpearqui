@@ -74,7 +74,7 @@ SECTION .text
 
 %macro exceptionHandler 1
 	pushState
-
+	;quizas aca haya que agregar algo!
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher
 
