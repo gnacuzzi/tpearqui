@@ -25,3 +25,6 @@ cpuVendor:
 	mov rsp, rbp
 	pop rbp
 	ret
+
+
+	;no programe getKey, porque creo que ya lo hago a mano en keyboard_handler

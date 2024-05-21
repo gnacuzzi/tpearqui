@@ -1,5 +1,8 @@
 //#include <videoDriver.h>
 #include <stdint.h>
+#include <font.h>
+#include <videoDriver.h>
+
 
 struct vbe_mode_info_structure {
 	uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
@@ -49,4 +52,30 @@ void putPixel(uint32_t hexColor, uint64_t x, uint64_t y) {
     framebuffer[offset]     =  (hexColor) & 0xFF;
     framebuffer[offset+1]   =  (hexColor >> 8) & 0xFF; 
     framebuffer[offset+2]   =  (hexColor >> 16) & 0xFF;
+}
+
+//chequear y hay que agregar que se pueda agrandar la letra
+void draw_char(int x, int y, char c, uint8_t color) {
+    if (c < FIRST_CHAR || c > LAST_CHAR) {
+        return; // Carácter no válido
+    }
+
+    int index = (c - FIRST_CHAR) * 16;
+    for (int i = 0; i < 16; i++) {
+        uint8_t line = font[index + i];
+        for (int j = 0; j < 8; j++) {
+            if (line & (0x80 >> j)) {
+                put_pixel(x + j, y + i, color);
+            }
+        }
+    }
+}
+
+
+void draw_string(int x, int y, const char* str, uint8_t color) {
+    while (*str) {
+        draw_char(x, y, *str, color);
+        x += 8; 
+        str++;
+    }
 }

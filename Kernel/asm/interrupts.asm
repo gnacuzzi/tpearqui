@@ -18,6 +18,7 @@ GLOBAL _exception6Handler
 
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
+EXTERN keyboard_handler
 
 SECTION .text
 
@@ -121,7 +122,28 @@ _irq00Handler:
 
 ;Keyboard
 _irq01Handler:
-	irqHandlerMaster 1
+	pushState
+	mov rax, 0
+	in al, 0x60
+	cmp al, 0x1D ; ctrl key
+	jne noCtrl
+	
+	;hay que programar que pasa si es control, es basicamente guardar los registros
+	;pero hay que tomar la decision de como hacer 
+
+	noCtrl:
+	cmp al, 0x9D	; checking if the key is a ctrl release
+	je exit
+	mov rdi, rax
+	call keyboard_handler
+	jmp exit
+	
+exit:
+	; signal pic EOI (End of Interrupt)
+	mov al, 20h
+	out 20h, al
+	popState
+	iretq
 
 ;Cascade pic never called
 _irq02Handler:
