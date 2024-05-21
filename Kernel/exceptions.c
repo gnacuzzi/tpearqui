@@ -3,6 +3,7 @@
 #define INVALID_OP_CODE_ID 6
 
 static void zero_division();
+static void invalid_op_code();
 
 void exceptionDispatcher(int exception) {
 	if (exception == ZERO_EXCEPTION_ID){
@@ -13,15 +14,15 @@ void exceptionDispatcher(int exception) {
 }
 
 static void zero_division() {
-	clearScreen();
+	//clearScreen();
 	//draw_string(400, 50, "TUVISTE UNA ZERO DIVISION", 25, RED, BLACK);
 	//printRegs(); //programar
-	clearScreen();
+	//clearScreen();
 }
 
 void invalid_op_code() {
-	clearScreen();
+	//clearScreen();
 	//draw_string(400, 50, "TUVISTE UNA OP-CODE", 19, RED, BLACK);
 	//printRegs();
-	clearScreen();
- }
+	//clearScreen();
+}

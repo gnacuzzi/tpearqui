@@ -65,7 +65,7 @@ void draw_char(int x, int y, char c, uint8_t color) {
         uint8_t line = font[index + i];
         for (int j = 0; j < 8; j++) {
             if (line & (0x80 >> j)) {
-                put_pixel(x + j, y + i, color);
+                putPixel(color, x + j, y + i);
             }
         }
     }
