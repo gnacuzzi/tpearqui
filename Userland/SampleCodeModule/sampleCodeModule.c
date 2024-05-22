@@ -1,5 +1,5 @@
-#include <stdio.h> 
 //#include <userasm.h>
+#include <stdio.h>
 
 #define BUFFER_LENGTH 20
 #define MAX_PARAMETERS 1  //todavia no sabemos cuantos parametros se van a enviar como maximo
@@ -105,12 +105,12 @@ int main() {
 	clear();
 	printf("Wellcome to StarShell! Write which module you want to use. To see ours modules write help\n");
 
-
+	*/
 	while(1){
 		printf("~$ ");
 		char buf[BUFFER_LENGTH] = {0};
 		scanf(buf, BUFFER_LENGTH);
-
+	/*
 		char command[BUFFER_LENGTH] = {0};
 		char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH] = {{0}}; //arreglo de arreglo de chars para cada parametro
 		scanCommand(command, parameters, buf);
@@ -125,5 +125,6 @@ int main() {
 		}
 	}
 	*/
+	}
 	return 0;
 }
