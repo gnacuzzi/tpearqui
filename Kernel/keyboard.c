@@ -28,3 +28,11 @@ void keyboard_handler(int tecla){
         cantElems++;
     }
 }
+
+char nextElement(){ // devuelve el primer elemento del buffer
+    if(cantElems <= 0 ) {return -1;} 
+    char toRet = buff[_bufferStart];
+    _bufferStart++;
+    cantElems--;
+    return toRet;
+}

@@ -12,6 +12,7 @@ GLOBAL _irq02Handler
 GLOBAL _irq03Handler
 GLOBAL _irq04Handler
 GLOBAL _irq05Handler
+GLOBAL _syscallHandler
 
 GLOBAL _exception0Handler
 GLOBAL _exception6Handler
@@ -160,6 +161,32 @@ _irq04Handler:
 ;USB
 _irq05Handler:
 	irqHandlerMaster 5
+
+;Syscall
+_syscallHandler:
+	pushState
+	mov rbp, rsp
+					
+	push r9
+	mov r9, r8
+	mov r8, r10
+	mov rcx, rdx
+	mov rdx, rsi
+	mov rsi, rdi
+	mov rdi, rax ; esto es necesario porque uno es si falla y el otro el id
+
+	call syscallDispatcher
+	mov [aux], rax
+
+	;terminar de entender
+	; signal pic EOI (End of Interrupt)
+	mov al, 20h
+	out 20h, al
+
+	mov rsp, rbp
+	popState
+	mov rax, [aux]
+	iretq
 
 
 ;Zero Division Exception

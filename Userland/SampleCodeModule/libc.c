@@ -1,6 +1,7 @@
 #include <libc.h>
 #include <stdint.h>
 #include <stdarg.h>
+#include <syscall.h>
 
 static unsigned int log(uint64_t n, int base) {
     unsigned int count = 1;
@@ -68,6 +69,9 @@ void va_printf(char* fmt, va_list args){
 
 void putchar(char c){
     write(1, c);
+    //1 seria la salida no agos? osea con esto me queres decir que queres que salga por pantalla
+    //rdi = 1
+    //rsi = c
 }
 
 void puts(const char* s){

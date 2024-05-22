@@ -1,4 +1,4 @@
-//#include <videoDriver.h>
+#include <videoDriver.h>
 #include <stdint.h>
 #include <font.h>
 #include <videoDriver.h>
@@ -47,6 +47,8 @@ VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 
 #define WIDTH VBE_mode_info->width
 #define HEIGHT VBE_mode_info->height
+int cursor_x = 0;
+int cursor_y = 0;
 
 int getPosition(int x, int y){
 	return (x * VBE_mode_info->bpp/8) + (y * VBE_mode_info->pitch);
@@ -83,30 +85,42 @@ void draw_rect(int x, int y, int width, int height, uint32_t color){
 
 void clear_screen(){
 	draw_rect(0, 0, WIDTH, HEIGHT, BLACK);
+	cursor_x = 0;
+	cursor_y = 0;
 }
 
-//chequear y hay que agregar que se pueda agrandar la letra
-void draw_char(int x, int y, char c, uint8_t color) {
+//chequear y hay que agregar que se pueda agrandar la letr
+//poner algo tipo default color pero por ahora dejo el WHITE
+void draw_char(char c) {
     if (c < FIRST_CHAR || c > LAST_CHAR) {
-        return; // Carácter no válido
-    }
+		return; // Carácter no válido
+	}
 
-    int index = (c - FIRST_CHAR) * 16;
-    for (int i = 0; i < 16; i++) {
-        uint8_t line = font[index + i];
-        for (int j = 0; j < 8; j++) {
-            if (line & (0x80 >> j)) {
-                putPixel(color, x + j, y + i);
-            }
-        }
-    }
+	if (cursor_x >= WIDTH) {
+		cursor_x = 0;
+		cursor_y += 16;
+	}
+
+	if (cursor_y >= HEIGHT) {
+		cursor_y = 0; // O podrías implementar scrolling
+	}
+
+	int index = (c - FIRST_CHAR) * 16;
+	for (int i = 0; i < 16; i++) {
+		uint8_t line = font[index + i];
+		for (int j = 0; j < 8; j++) {
+			if (line & (0x80 >> j)) {
+				putPixel(WHITE, cursor_x + j, cursor_y + i);
+			}
+		}
+	}
+	cursor_x += 8; // Incrementa la posición x del cursor después de dibujar el carácter
 }
 
 
-void draw_string(int x, int y, const char* str, uint8_t color) {
+void draw_string(const char* str) {
     while (*str) {
-        draw_char(x, y, *str, color);
-        x += 8; 
+        draw_char(*str); 
         str++;
     }
 }
