@@ -3,7 +3,6 @@
 #include <font.h>
 #include <videoDriver.h>
 
-
 struct vbe_mode_info_structure {
 	uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
 	uint8_t window_a;			// deprecated
@@ -46,12 +45,44 @@ typedef struct vbe_mode_info_structure * VBEInfoPtr;
 
 VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 
+#define WIDTH VBE_mode_info->width
+#define HEIGHT VBE_mode_info->height
+
+int getPosition(int x, int y){
+	return (x * VBE_mode_info->bpp/8) + (y * VBE_mode_info->pitch);
+}
+
 void putPixel(uint32_t hexColor, uint64_t x, uint64_t y) {
     uint8_t * framebuffer = (uint8_t *) VBE_mode_info->framebuffer;
     uint64_t offset = (x * ((VBE_mode_info->bpp)/8)) + (y * VBE_mode_info->pitch);
     framebuffer[offset]     =  (hexColor) & 0xFF;
     framebuffer[offset+1]   =  (hexColor >> 8) & 0xFF; 
     framebuffer[offset+2]   =  (hexColor >> 16) & 0xFF;
+}
+
+void draw_rect(int x, int y, int width, int height, uint32_t color){
+	if (x > WIDTH || y > HEIGHT) return;
+	if (width + x > WIDTH) width = WIDTH - x;
+	if (height + y > HEIGHT) height = HEIGHT - y;
+	
+	uint8_t * framebuffer = (uint8_t *) ((u_int64_t)VBE_mode_info->framebuffer + getPosition(x, y));
+	//quizas para esto puedo hacer funciones de los colores
+	int blue = color & 0xFF;
+	int green = (color >> 8) & 0xFF;
+	int red = (color >> 16) & 0xFF;
+
+	for (int i = x; i < x + width; i++){
+		for (int j = y; j < y + height; j++){
+			framebuffer = (uint8_t *) ((u_int64_t)VBE_mode_info->framebuffer + getPosition(i, j));
+			framebuffer[getPosition(i, j)] = blue;
+			framebuffer[getPosition(i, j) + 1] = green;
+			framebuffer[getPosition(i, j) + 2] = red;
+		}
+	}
+}
+
+void clear_screen(){
+	draw_rect(0, 0, WIDTH, HEIGHT, BLACK);
 }
 
 //chequear y hay que agregar que se pueda agrandar la letra
@@ -79,3 +110,6 @@ void draw_string(int x, int y, const char* str, uint8_t color) {
         str++;
     }
 }
+
+//falta lo de los colores de las fuentes
+//falta lo del tamaño de las fuentes
