@@ -1,10 +1,11 @@
 //#include <userasm.h>
-#include <stdio.h>
+
+#include <libc.h>
 
 #define BUFFER_LENGTH 20
 #define MAX_PARAMETERS 1  //todavia no sabemos cuantos parametros se van a enviar como maximo
 #define PARAMETERS_LENGTH 20
-/*
+
 static const char* allCommands[] = {"dividebyzero", "eliminator", "help", "invalidoperation","lettersize", "time"};
 static void (*commandsFunction[])(char *parameters) = {dividebyzero, eliminator, help, invalidoperation, lettersize, time}; //funciones a hacer
 
@@ -98,19 +99,19 @@ int commandId(char* command){
 	}
 	return -1;
 }
-*/
+
 
 int main() {
-	/*
+	
 	clear();
 	printf("Wellcome to StarShell! Write which module you want to use. To see ours modules write help\n");
 
-	*/
+	
 	while(1){
 		printf("~$ ");
 		char buf[BUFFER_LENGTH] = {0};
 		scanf(buf, BUFFER_LENGTH);
-	/*
+	
 		char command[BUFFER_LENGTH] = {0};
 		char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH] = {{0}}; //arreglo de arreglo de chars para cada parametro
 		scanCommand(command, parameters, buf);
@@ -123,8 +124,6 @@ int main() {
 			printf(command);
 			printf(": invalid command\n");
 		}
-	}
-	*/
 	}
 	return 0;
 }
