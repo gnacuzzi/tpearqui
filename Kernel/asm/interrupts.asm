@@ -20,6 +20,7 @@ GLOBAL _exception6Handler
 EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 EXTERN keyboard_handler
+EXTERN syscallDispatcher
 
 SECTION .text
 

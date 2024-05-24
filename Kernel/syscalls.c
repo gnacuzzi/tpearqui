@@ -14,6 +14,8 @@
 
 static void syscall_write(uint32_t fd, char c);
 static void syscall_read( uint64_t buffer);
+static void syscall_clear();
+
 
 
 uint64_t syscallDispatcher(uint64_t nr, uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t arg3, uint64_t arg4, uint64_t arg5) {
