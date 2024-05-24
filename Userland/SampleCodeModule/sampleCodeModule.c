@@ -6,7 +6,8 @@
 #define BUFFER_LENGTH 20
 #define MAX_PARAMETERS 1  //todavia no sabemos cuantos parametros se van a enviar como maximo
 #define PARAMETERS_LENGTH 20
-
+static char lineBuffer[256] = {0}; 
+static int lineCantChar = 0;
 
 static void dividebyzero(char** parameters){
 	if(parameters != 0){
@@ -106,14 +107,15 @@ int commandId(char* command){
 int main() {
 	
 	clear();
-	printf("Wellcome to StarShell! Write which module you want to use. To see ours modules write help\n");
-
+	printf("Wellcome to StarShell! Write which module you want to use. To see our modules write help\n");
 	
 	while(1){
 		printf("~$ ");
 		char buf[BUFFER_LENGTH] = {0};
-		scanf(buf, BUFFER_LENGTH);
-	
+		char c = readchar();
+		putchar(c);
+		//scanf(buf, BUFFER_LENGTH);
+		
 		char command[BUFFER_LENGTH] = {0};
 		char ** parameters; //arreglo de arreglo de chars para cada parametro
 		scanCommand(command, parameters, buf);

@@ -2,6 +2,7 @@
 #define _KEYBOARD_H_
 
 void keyboard_handler();
-char nextElement();
+char getScancode();
+char getAscii();
 
 #endif

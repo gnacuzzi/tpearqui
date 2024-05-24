@@ -124,21 +124,7 @@ _irq00Handler:
 
 ;Keyboard
 _irq01Handler:
-	pushState
-	mov rax, 0
-	in al, 0x60
-	cmp al, 0x1D ; ctrl key
-	jne noCtrl
-	
-	;hay que programar que pasa si es control, es basicamente guardar los registros
-	;pero hay que tomar la decision de como hacer 
-
-	noCtrl:
-	cmp al, 0x9D	; checking if the key is a ctrl release
-	je exit
-	mov rdi, rax
-	call keyboard_handler
-	jmp exit
+	irqHandlerMaster 1
 	
 exit:
 	; signal pic EOI (End of Interrupt)
@@ -167,19 +153,17 @@ _irq05Handler:
 _syscallHandler:
 	pushState
 	mov rbp, rsp
-					
+
 	push r9
 	mov r9, r8
 	mov r8, r10
 	mov rcx, rdx
 	mov rdx, rsi
 	mov rsi, rdi
-	mov rdi, rax ; esto es necesario porque uno es si falla y el otro el id
-
+	mov rdi, rax
 	call syscallDispatcher
 	mov [aux], rax
 
-	;terminar de entender
 	; signal pic EOI (End of Interrupt)
 	mov al, 20h
 	out 20h, al

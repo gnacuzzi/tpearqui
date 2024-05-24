@@ -1,10 +1,10 @@
 GLOBAL write
-GLOBAL read
+GLOBAL read_char
 GLOBAL clear_screen
 
-read:
+read_char:
     mov rax, 0
-    mov rdi, 0
+    ;mov rdi, 0
     int 80h
     ret
 

@@ -1,4 +1,5 @@
 GLOBAL cpuVendor
+GLOBAL getKey
 
 section .text
 	
@@ -27,4 +28,13 @@ cpuVendor:
 	ret
 
 
-	;no programe getKey, porque creo que ya lo hago a mano en keyboard_handler
+getKey:
+	push rbp
+    mov rbp, rsp
+
+    xor rax, rax
+    in al, 60h
+
+    mov rsp, rbp
+    pop rbp
+    ret

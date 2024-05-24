@@ -16,9 +16,23 @@ static int isnumber(int n){
     return ((n) >= '0' && (n) <= '9');
 }
 
+
+char readchar() {
+    char c;
+    c = read_char(0);
+    putchar(c);
+    return c;
+}
+/*
 void scanf(char* buffer, uint64_t len){
     read(buffer, len);
+    for (int i = 0; i < len; i++){
+        getChar();
+    }
+
 }
+*/
+
 
 // https://www.equestionanswers.com/c/c-printf-scanf-working-principle.php
 // usamos esta biblioteca para el manejo de argumentos variables
