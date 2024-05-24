@@ -14,8 +14,8 @@ static int isnumber(int n){
     return ((n) >= '0' && (n) <= '9');
 }
 
-void scanf(char* readbuf, uint64_t maxLen){
-
+void scanf(char* buffer, uint64_t len){
+    read(buffer, len);
 }
 
 // https://www.equestionanswers.com/c/c-printf-scanf-working-principle.php

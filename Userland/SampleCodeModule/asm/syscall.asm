@@ -5,6 +5,7 @@ section .txt:
 
 read:
     mov rax, 0
+    mov rdi, 0
     int 80h
     ret
 

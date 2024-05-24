@@ -67,7 +67,7 @@ void draw_rect(int x, int y, int width, int height, uint32_t color){
 	if (width + x > WIDTH) width = WIDTH - x;
 	if (height + y > HEIGHT) height = HEIGHT - y;
 	
-	uint8_t * framebuffer = (uint8_t *) ((u_int64_t)VBE_mode_info->framebuffer + getPosition(x, y));
+	uint8_t * framebuffer = (uint8_t *) ((uint64_t)VBE_mode_info->framebuffer + getPosition(x, y));
 	//quizas para esto puedo hacer funciones de los colores
 	int blue = color & 0xFF;
 	int green = (color >> 8) & 0xFF;
@@ -75,7 +75,7 @@ void draw_rect(int x, int y, int width, int height, uint32_t color){
 
 	for (int i = x; i < x + width; i++){
 		for (int j = y; j < y + height; j++){
-			framebuffer = (uint8_t *) ((u_int64_t)VBE_mode_info->framebuffer + getPosition(i, j));
+			framebuffer = (uint8_t *) ((uint64_t)VBE_mode_info->framebuffer + getPosition(i, j));
 			framebuffer[getPosition(i, j)] = blue;
 			framebuffer[getPosition(i, j) + 1] = green;
 			framebuffer[getPosition(i, j) + 2] = red;

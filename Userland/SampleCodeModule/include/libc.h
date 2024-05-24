@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 
-void scanf(char* readbuf, uint64_t maxLen);
+void scanf(char* buffer, uint64_t len);
 
 void printf(char * fmt, ...);
 
