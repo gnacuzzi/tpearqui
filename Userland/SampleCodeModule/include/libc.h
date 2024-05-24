@@ -3,10 +3,9 @@
 
 #include <stdint.h>
 
-
 void scanf(char* buffer, uint64_t len);
 
-void printf(char * fmt, ...);
+void printf(const char * fmt, ...);
 
 int strcmp(const char * s1, const char * s2);
 
@@ -19,6 +18,8 @@ void printchars(char c, int n);
 int strtoi(char* s, char ** end);
 
 int itoa(uint64_t n, char* buffer, int base);
+
+void clear();
 
 
 #endif

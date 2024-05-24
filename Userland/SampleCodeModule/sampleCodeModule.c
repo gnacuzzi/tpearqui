@@ -1,21 +1,20 @@
 //#include <userasm.h>
 
-#include <libc.h>
+#include "include/libc.h"
+#include "include/userasm.h"
 
 #define BUFFER_LENGTH 20
 #define MAX_PARAMETERS 1  //todavia no sabemos cuantos parametros se van a enviar como maximo
 #define PARAMETERS_LENGTH 20
 
-static const char* allCommands[] = {"dividebyzero", "eliminator", "help", "invalidoperation","lettersize", "time"};
-static void (*commandsFunction[])(char *parameters) = {dividebyzero, eliminator, help, invalidoperation, lettersize, time}; //funciones a hacer
 
 static void dividebyzero(char** parameters){
-	if(parameters != 0){
+	/*if(parameters != 0){
 		printf("DivideByZero doesn't need parameters\n");
 		return;
 	}
 
-	dividebyzeroexception();
+	dividebyzeroexception();*/
 }
 
 static void eliminator(char** parameters){
@@ -23,12 +22,12 @@ static void eliminator(char** parameters){
 }
 
 static void invalidoperation(char** parameters){
-	if(parameters != 0){
+	/*if(parameters != 0){
 		printf("InvalidOperation doesn't need parameters\n");
 		return;
 	}
 
-	invalidoperationexception();
+	invalidoperationexception();*/
 }
 
 static void lettersize(char** parameters){
@@ -55,6 +54,9 @@ static void help(char** parameters){
 	"TIME						Show current time\n";
 	printf(manual);
 }
+
+static const char* allCommands[] = {"dividebyzero", "eliminator", "help", "invalidoperation","lettersize", "time"};
+static void (*commandsFunction[])(char ** parameters) = {dividebyzero, eliminator, help, invalidoperation, lettersize, time}; //funciones a hacer
 
 void scanCommand(char* command, char **parameters, char* buffer){
 	// buffer = "command arg1 arg2"
@@ -113,7 +115,7 @@ int main() {
 		scanf(buf, BUFFER_LENGTH);
 	
 		char command[BUFFER_LENGTH] = {0};
-		char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH] = {{0}}; //arreglo de arreglo de chars para cada parametro
+		char ** parameters; //arreglo de arreglo de chars para cada parametro
 		scanCommand(command, parameters, buf);
 
 		int id = commandId(command);

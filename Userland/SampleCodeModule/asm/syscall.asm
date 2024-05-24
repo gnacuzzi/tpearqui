@@ -1,7 +1,6 @@
 GLOBAL write
 GLOBAL read
-
-section .txt:
+GLOBAL clear_screen
 
 read:
     mov rax, 0
@@ -11,5 +10,10 @@ read:
 
 write:
     mov rax, 1
+    int 80h
+    ret
+
+clear_screen:
+    mov rax, 2
     int 80h
     ret

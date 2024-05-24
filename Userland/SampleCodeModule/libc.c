@@ -1,7 +1,9 @@
-#include <libc.h>
-#include <stdint.h>
+#include "include/libc.h"
+#include "include/syscall.h"
+
 #include <stdarg.h>
-#include <syscall.h>
+
+static void va_printf(const char* fmt, va_list args);
 
 static unsigned int log(uint64_t n, int base) {
     unsigned int count = 1;
@@ -21,14 +23,14 @@ void scanf(char* buffer, uint64_t len){
 // https://www.equestionanswers.com/c/c-printf-scanf-working-principle.php
 // usamos esta biblioteca para el manejo de argumentos variables
 
-void printf(char * fmt, ...){
+void printf(const char * fmt, ...){
     va_list vl;  //donde se guardan los argumentos variables
     va_start(vl, fmt);
     va_printf(fmt, vl);
     va_end(vl);
 }
 
-void va_printf(char* fmt, va_list args){
+static void va_printf(const char* fmt, va_list args){
     char buffer[] = {0};
     char * aux = fmt;           //puntero
     while(*aux){
@@ -69,9 +71,6 @@ void va_printf(char* fmt, va_list args){
 
 void putchar(char c){
     write(1, c);
-    //1 seria la salida no agos? osea con esto me queres decir que queres que salga por pantalla
-    //rdi = 1
-    //rsi = c
 }
 
 void puts(const char* s){
@@ -128,4 +127,16 @@ int strtoi(char* s, char ** end){
     }
     *end = s;
     return n;
+}
+
+int strcmp(const char * s1, const char * s2){
+    while (*s1 && (*s1 == *s2)) {
+        s1++;
+        s2++;
+    }
+    return *s1 - *s2;
+}
+
+void clear(){
+    clear_screen();
 }
