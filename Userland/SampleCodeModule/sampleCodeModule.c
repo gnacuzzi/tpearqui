@@ -9,12 +9,12 @@
 
 
 static void dividebyzero(char** parameters){
-	/*if(parameters != 0){
+	if(parameters != 0){
 		printf("DivideByZero doesn't need parameters\n");
 		return;
 	}
 
-	dividebyzeroexception();*/
+	dividebyzeroexception();
 }
 
 static void eliminator(char** parameters){
@@ -22,12 +22,12 @@ static void eliminator(char** parameters){
 }
 
 static void invalidoperation(char** parameters){
-	/*if(parameters != 0){
+	if(parameters != 0){
 		printf("InvalidOperation doesn't need parameters\n");
 		return;
 	}
 
-	invalidoperationexception();*/
+	invalidoperationexception();
 }
 
 static void lettersize(char** parameters){

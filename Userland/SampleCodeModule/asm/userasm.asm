@@ -2,7 +2,7 @@ GLOBAL dividebyzeroexception
 GLOBAL invalidoperationexception
 
 dividebyzeroexception:
-    mov raz, 0
+    mov rax, 0
     div rax
     ret
 
