@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <font.h>
 #include <videoDriver.h>
+#include <lib.h>
 
 struct vbe_mode_info_structure {
 	uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
@@ -47,74 +48,94 @@ VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 
 #define WIDTH VBE_mode_info->width
 #define HEIGHT VBE_mode_info->height
-int cursor_x = 0;
-int cursor_y = 0;
+uint16_t cursor_x = 0;
+uint16_t cursor_y = 0;
 
-int getPosition(int x, int y){
-	return (x * VBE_mode_info->bpp/8) + (y * VBE_mode_info->pitch);
+Color penColor = {255, 255, 255};
+
+static void* getPtrToPixel(uint16_t x, uint16_t y) {
+    return (void*)(VBE_mode_info->framebuffer + 3 * (x + (y * (uint64_t)VBE_mode_info->width)));
 }
 
-void putPixel(uint32_t hexColor, uint64_t x, uint64_t y) {
-    uint8_t * framebuffer = (uint8_t *) VBE_mode_info->framebuffer;
-    uint64_t offset = (x * ((VBE_mode_info->bpp)/8)) + (y * VBE_mode_info->pitch);
-    framebuffer[offset]     =  (hexColor) & 0xFF;
-    framebuffer[offset+1]   =  (hexColor >> 8) & 0xFF; 
-    framebuffer[offset+2]   =  (hexColor >> 16) & 0xFF;
+void putPixel(Color color, uint64_t x, uint64_t y) {
+	if (x >= VBE_mode_info->width || y >= VBE_mode_info->height)
+        return;
+
+    Color* pos = (Color*)getPtrToPixel(x, y);
+    *pos = color;
 }
 
-void draw_rect(int x, int y, int width, int height, uint32_t color){
-	if (x > WIDTH || y > HEIGHT) return;
-	if (width + x > WIDTH) width = WIDTH - x;
-	if (height + y > HEIGHT) height = HEIGHT - y;
-	
-	uint8_t * framebuffer = (uint8_t *) ((uint64_t)VBE_mode_info->framebuffer + getPosition(x, y));
-	//quizas para esto puedo hacer funciones de los colores
-	int blue = color & 0xFF;
-	int green = (color >> 8) & 0xFF;
-	int red = (color >> 16) & 0xFF;
+void draw_rect(int x, int y, int width, int height, Color color){
+	if (x >= VBE_mode_info->width || y >= VBE_mode_info->height)
+        return;
+    
+    uint16_t maxWidth = VBE_mode_info->width - x;
+    if (width > maxWidth) width = maxWidth;
+    
+    uint16_t maxHeight = VBE_mode_info->height - y;
+    if (height > maxHeight) height = maxHeight;
 
-	for (int i = x; i < x + width; i++){
-		for (int j = y; j < y + height; j++){
-			framebuffer = (uint8_t *) ((uint64_t)VBE_mode_info->framebuffer + getPosition(i, j));
-			framebuffer[getPosition(i, j)] = blue;
-			framebuffer[getPosition(i, j) + 1] = green;
-			framebuffer[getPosition(i, j) + 2] = red;
-		}
-	}
+    Color* ptr = (Color*)getPtrToPixel(x, y);
+    unsigned int adv = VBE_mode_info->width - width;
+    for (int i=0; i<height; i++) {
+        for (int c=0; c<width; c++)
+            *(ptr++) = color;
+        ptr += adv;
+    }
 }
 
 void clear_screen(){
-	draw_rect(0, 0, WIDTH, HEIGHT, BLACK);
+	uint8_t* pos = (uint8_t*)((uint64_t)VBE_mode_info->framebuffer);
+    for (uint32_t len = 3 * (uint32_t)VBE_mode_info->width * VBE_mode_info->height; len; len--, pos++)
+        *pos = 0;
 	cursor_x = 0;
 	cursor_y = 0;
+}
+
+void print_new_line(void){
+	cursor_x = 0; // pen x is set to full left.
+
+    // If there is space for another line, we simply advance the pen y. Otherwise, we move up the entire screen and clear the lower part.
+    if (cursor_y + (2*CHAR_HEIGHT) <= VBE_mode_info->height) {
+        cursor_y += CHAR_HEIGHT;
+    } else {
+        void* dst = (void*)((uint64_t)VBE_mode_info->framebuffer);
+        void* src = (void*)(dst + 3 * (CHAR_HEIGHT * (uint64_t)VBE_mode_info->width));
+        uint64_t len = 3 * ((uint64_t)VBE_mode_info->width * (VBE_mode_info->height - CHAR_HEIGHT));
+        memcpy(dst, src, len);
+        memset(dst+len, 0, 3 * (uint64_t)VBE_mode_info->width * CHAR_HEIGHT);
+    }
 }
 
 //chequear y hay que agregar que se pueda agrandar la letr
 //poner algo tipo default color pero por ahora dejo el WHITE
 void draw_char(char c) {
-    if (c < FIRST_CHAR || c > LAST_CHAR) {
-		return; // Carácter no válido
-	}
+    if (c == '\n') {
+        print_new_line();
+        return;
+    }
 
-	if (cursor_x >= WIDTH) {
-		cursor_x = 0;
-		cursor_y += 16;
-	}
+    if (c >= FIRST_CHAR && c <= LAST_CHAR) {
+	    const char* data = font + 32*(c-33);
+	    for (int h=0; h<16; h++) {
+    		Color* pos = (Color*)getPtrToPixel(cursor_x, cursor_y+h);
+    		if (*data & 0b00000001) pos[0] = penColor;
+    		if (*data & 0b00000010) pos[1] = penColor;
+    		if (*data & 0b00000100) pos[2] = penColor;
+    		if (*data & 0b00001000) pos[3] = penColor;
+    		if (*data & 0b00010000) pos[4] = penColor;
+    		if (*data & 0b00100000) pos[5] = penColor;
+    		if (*data & 0b01000000) pos[6] = penColor;
+    		if (*data & 0b10000000) pos[7] = penColor;
+    		data++;
+    		if (*data & 0b00000001) pos[8] = penColor;
+    		data++;
+    	}
+    }
 
-	if (cursor_y >= HEIGHT) {
-		cursor_y = 0; // O podrías implementar scrolling
-	}
-
-	int index = (c - FIRST_CHAR) * 16;
-	for (int i = 0; i < 16; i++) {
-		uint8_t line = font[index + i];
-		for (int j = 0; j < 8; j++) {
-			if (line & (0x80 >> j)) {
-				putPixel(WHITE, cursor_x + j, cursor_y + i);
-			}
-		}
-	}
-	cursor_x += 8; // Incrementa la posición x del cursor después de dibujar el carácter
+    cursor_x += CHAR_WIDTH;
+    if (cursor_x > VBE_mode_info->width - CHAR_WIDTH)
+        print_new_line();
 }
 
 

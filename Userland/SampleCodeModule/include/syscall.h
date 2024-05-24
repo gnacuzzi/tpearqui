@@ -6,7 +6,7 @@
 
 void write(int fd, char c);
 
-uint8_t read(char * buffer, uint64_t len);
+uint8_t read_char(int fd);
 
 void clear_screen();
 

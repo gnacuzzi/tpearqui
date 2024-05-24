@@ -13,7 +13,7 @@
 #define CLEAR 2
 
 static void syscall_write(uint32_t fd, char c);
-static void syscall_read( uint64_t buffer);
+static uint8_t syscall_read( uint64_t buffer);
 static void syscall_clear();
 
 
@@ -22,8 +22,7 @@ uint64_t syscallDispatcher(uint64_t nr, uint64_t arg0, uint64_t arg1, uint64_t a
 	switch (nr) {
         case READ:
         //hay algo que no me convence, puede llegar a fallar
-            syscall_read(arg0);
-            break;
+            return syscall_read((uint32_t)arg0);
 		case WRITE:
 			syscall_write((uint32_t)arg0, (char)arg1);
             break;
@@ -35,8 +34,9 @@ uint64_t syscallDispatcher(uint64_t nr, uint64_t arg0, uint64_t arg1, uint64_t a
 }
 
 
-static void syscall_read(uint64_t buffer){
-    ((char*) buffer)[0] = nextElement();
+static uint8_t syscall_read(uint64_t fd){
+    //estoy asumiendo que siempre leo de entrada estandar
+    return getAscii();
     
 }
 
