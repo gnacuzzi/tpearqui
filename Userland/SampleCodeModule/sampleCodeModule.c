@@ -107,21 +107,16 @@ int commandId(char* command){
 int main() {
 	
 	clear();
-	printf("Wellcome to StarShell! Write which module you want to use. To see our modules write help\n");
-	printf("~$");
+	printf("Wellcome to StarShell! Write which module you want to use. To see ours modules write help\n");
 
+	
 	while(1){
 		char buf[BUFFER_LENGTH] = {0};
-		char c = readchar();
-		if(c!=-1 && c!=0){
-			if(c != '\n'){
-				printf(c);
-			}
-			else{
-				//scanf(buf, BUFFER_LENGTH);
-				char command[BUFFER_LENGTH] = {0};
-				char ** parameters; //arreglo de arreglo de chars para cada parametro
-				scanCommand(command, parameters, buf);
+		scanf(buf, BUFFER_LENGTH);
+	
+		char command[BUFFER_LENGTH] = {0};
+		char ** parameters; //arreglo de arreglo de chars para cada parametro
+		scanCommand(command, parameters, buf);
 
 				int id = commandId(command);
 				if(id >= 0){

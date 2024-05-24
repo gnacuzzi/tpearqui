@@ -20,6 +20,10 @@ static int isnumber(int n){
 char readchar() {
     char c;
     c = read_char(0);
+<<<<<<< HEAD
+=======
+    putchar(c);
+>>>>>>> 971e0f52ee60050659bceaaaf31cd6fa3d661441
     return c;
 }
 /*
