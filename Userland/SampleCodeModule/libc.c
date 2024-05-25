@@ -24,30 +24,6 @@ char readchar() {
     return localBuff[0];
 }
 
-int scanf(char* buf, uint64_t len){
-char buffer[len];
-    char c;
-    uint64_t bIdx = 0;
-
-    while ((c = readchar()) != '\n' && bIdx < len - 1) {
-        if (c == -1) {
-            return -1;
-        }
-        if (c != 0) {
-            if (c != '\b') {
-                buffer[bIdx++] = c;
-                putchar(c);
-            } else if (bIdx > 0) {
-                bIdx--;
-                putchar('\b'); // Mover el cursor hacia atrás
-                putchar(' ');  // Sobrescribir con un espacio
-                putchar('\b'); // Mover el cursor hacia atrás nuevamente
-            }
-        }
-    putchar('\n');
-    return 0;
-    }
-}
 // https://www.equestionanswers.com/c/c-printf-scanf-working-principle.php
 // usamos esta biblioteca para el manejo de argumentos variables
 
