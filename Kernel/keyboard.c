@@ -1,6 +1,7 @@
  #include <videoDriver.h>
  #include <keyBoard.h>
  #include <lib.h>
+
  #define BUFFER_SIZE 256
  static const char keyBoardTable[256] = 
     {       
@@ -29,7 +30,6 @@ char nextElement(){ // returns the first element pushed into the buffer in crono
     char toRet = buff[front];
     front++;
     cantElems--;
-    //draw_char(toRet);
     return toRet;
 }
  
@@ -43,7 +43,6 @@ void keyboard_handler(){ // Every time someone presses a key this function gets 
         if(rear == BUFFER_SIZE) rear = 0; // Reposition of both the front and rear pointer
         if(front == BUFFER_SIZE) front  = 0;
         buff[rear++] = keyBoardTable[tecla];
-    
         cantElems++;
     }
 }

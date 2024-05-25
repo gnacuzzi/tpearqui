@@ -22,7 +22,7 @@ uint64_t syscallDispatcher(uint64_t nr, uint64_t arg0, uint64_t arg1, uint64_t a
 	switch (nr) {
         case READ:
         //hay algo que no me convence, puede llegar a fallar
-            syscall_read((uint32_t)arg0);
+            syscall_read(arg0);
 		case WRITE:
 			syscall_write((uint32_t)arg0, (char)arg1);
             break;
