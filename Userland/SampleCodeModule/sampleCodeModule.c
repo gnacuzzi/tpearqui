@@ -115,9 +115,10 @@ int main() {
 		char c = readchar();
 		if(c!=-1 && c!=0){
 			if(c != '\n'){
-				printf(c);
+				putchar(c);
 			}
 			else{
+				/*
 				//scanf(buf, BUFFER_LENGTH);
 				char command[BUFFER_LENGTH] = {0};
 				char ** parameters; //arreglo de arreglo de chars para cada parametro
@@ -131,7 +132,8 @@ int main() {
 					printf(command);
 					printf(": invalid command\n");
 				}
-				printf("~$");
+				*/
+				printf("\n~$");
 			}
 		}
 	}

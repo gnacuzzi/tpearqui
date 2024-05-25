@@ -21,7 +21,6 @@ static void syscall_clear();
 uint64_t syscallDispatcher(uint64_t nr, uint64_t arg0, uint64_t arg1, uint64_t arg2, uint64_t arg3, uint64_t arg4, uint64_t arg5) {
 	switch (nr) {
         case READ:
-        //hay algo que no me convence, puede llegar a fallar
             syscall_read(arg0);
 		case WRITE:
 			syscall_write((uint32_t)arg0, (char)arg1);
