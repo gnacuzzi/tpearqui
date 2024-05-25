@@ -35,7 +35,7 @@ int scanf(char* buffer, uint64_t len){
             buffer[bIdx++] = c;
             putchar(c);
         }
-        else if(bIdx>0){
+        else if(bIdx>0){//no esta entrando aca, no entendemos porque
             putchar('a');
             bIdx--;
             putchar(c);

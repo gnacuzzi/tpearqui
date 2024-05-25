@@ -114,7 +114,6 @@ int main() {
 		char buf[BUFFER_LENGTH] = {0};
 		int rta = scanf(buf, BUFFER_LENGTH);
 		if (rta != -1){
-				/*
 			char command[BUFFER_LENGTH] = {0};
 			char ** parameters; //arreglo de arreglo de chars para cada parametro
 			scanCommand(command, parameters, buf);
@@ -127,7 +126,7 @@ int main() {
 				printf(command);
 				printf(": invalid command\n");
 			}
-			*/
+			
 			printf("~$");
 		}
 	}
