@@ -18,9 +18,9 @@ static int isnumber(int n){
 
 
 char readchar() {
-    char c;
-    c = read_char(0);
-    return c;
+    char localBuff[1];
+    read_char(localBuff);
+    return localBuff[0];
 }
 /*
 void scanf(char* buffer, uint64_t len){
