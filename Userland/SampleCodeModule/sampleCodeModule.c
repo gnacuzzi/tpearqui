@@ -4,13 +4,12 @@
 #include "include/userasm.h"
 
 #define BUFFER_LENGTH 256
-#define MAX_PARAMETERS 1  //todavia no sabemos cuantos parametros se van a enviar como maximo
-#define PARAMETERS_LENGTH 20
-static char lineBuffer[256] = {0}; 
-static int lineCantChar = 0;
+#define MAX_PARAMETERS 2  //todavia no sabemos cuantos parametros se van a enviar como maximo
+#define PARAMETERS_LENGTH 256
 
-static void dividebyzero(char** parameters){
-	if(parameters != 0){
+
+static void dividebyzero(char** parameters, int cantParams){
+	if(cantParams != 0){
 		printf("DivideByZero doesn't need parameters\n");
 		return;
 	}
@@ -18,12 +17,12 @@ static void dividebyzero(char** parameters){
 	dividebyzeroexception();
 }
 
-static void eliminator(char** parameters){
+static void eliminator(char** parameters, int cantParams){
 	//completar
 }
 
-static void invalidoperation(char** parameters){
-	if(parameters != 0){
+static void invalidoperation(char** parameters, int cantParams){
+	if(cantParams != 0){
 		printf("InvalidOperation doesn't need parameters\n");
 		return;
 	}
@@ -31,17 +30,17 @@ static void invalidoperation(char** parameters){
 	invalidoperationexception();
 }
 
-static void lettersize(char** parameters){
+static void lettersize(char** parameters, int cantParams){
 	//completar
 }
 
-static void time(char** parameters){
+static void time(char** parameters, int cantParams){
 	//completar
 }	
 
 
-static void help(char** parameters){
-	if(parameters != 0){
+static void help(char** parameters, int cantParams){
+	if(cantParams != 0){
 		printf("Help doesn't need parameters\n");
 		return;
 	}
@@ -56,49 +55,47 @@ static void help(char** parameters){
 	printf(manual);
 }
 
-static const char* allCommands[] = {"dividebyzero", "eliminator", "help", "invalidoperation","lettersize", "time"};
-static void (*commandsFunction[])(char ** parameters) = {dividebyzero, eliminator, help, invalidoperation, lettersize, time}; //funciones a hacer
+static const char* allCommands[] = {"DIVIDEBYZERO", "ELIMINATOR", "HELP", "INVALIDOPERATION","LETTERSIZE", "TIME"};
+static void (*commandsFunction[])(char ** parameters, int cantParams) = {dividebyzero, eliminator, help, invalidoperation, lettersize, time}; //funciones a hacer
 
-void scanCommand(char* command, char **parameters, char* buffer){
-	printf(buffer);
+int scanCommand(char* command, char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], char* buffer){
 	// buffer = "command arg1 arg2"
 	int i, j ,k;
 
-	for(i=0, j=0; buffer[i] != " "; i++ ){
-		command[j++] = buffer[i];
+	for(i=0, j=0; buffer[i] != ' '; i++, j++ ){
+		command[j] = buffer[i];
 	}
 
 	command[j] = 0;
 
-	while (buffer[i] == " "){
+	while (buffer[i] == ' '){
 		i++;
 	}
 	
-	for(j=0, k=0; buffer[i] != "0"; i++){
-		if(buffer[i] != " "){
-			parameters[j][k++] = buffer[i];
+	for(j=0, k=0; buffer[i] != 0;){
+		if(buffer[i] != ' '){
+			parameters[j][k++] = buffer[i++];
 		}
 		else{
 			parameters[j][k]=0;
-			j++;
 			k=0;
-			while (buffer[i] == " "){
+			j++;
+			while (buffer[i] == ' '){
 				i++;
 			}
 		}
-	}	
-	printf(command);
-
+	}
+	return j;
 }
 
 int commandId(char* command){
 	char *aux = command;
-	for(int i=0; command[i]!=0; i++){
+	for(int i=0; allCommands[i]!=0 ; i++){
 		int cmp = strcmp(aux, allCommands[i]);
 		if(cmp < 0){ //ordenado alfabeticamente
 			return -1;
 		}
-		else{
+		else if(cmp == 0){
 			return i;
 		}
 	}
@@ -107,32 +104,50 @@ int commandId(char* command){
 
 
 int main() {
-	
 	clear();
 	printf("Wellcome to StarShell! Write which module you want to use. To see ours modules write help\n");
 	printf("~$");
-	
+
+	char buffer[BUFFER_LENGTH] = {0}; 
+
+	int idx = 0;
+
 	while(1){
-		char buf[BUFFER_LENGTH] = {0};
-		int rta = scanf(&buf, BUFFER_LENGTH);
-		printf(buf);
-		if (rta != -1){
-			char command[BUFFER_LENGTH] = {0};
-			char ** parameters; //arreglo de arreglo de chars para cada parametro
-			scanCommand(command, parameters, buf);
-
-			int id = commandId(command);
-			if(id >= 0){
-				commandsFunction[id](parameters);
-			}
-			else{
+        char c  = readchar();
+        
+        if (c != -1 && c!= 0){
+            /*if(c == 8){
+                if(idx != 0){ 
+                    backspace();
+                    idx--;
+                }
+            } else*/ if(c == '\n'){ 
+                printf("\n");
+                buffer[idx] = 0;
+				char command[BUFFER_LENGTH]={0};
+				char params[MAX_PARAMETERS][PARAMETERS_LENGTH]={{0}};
+                int cantParams = scanCommand(command, params,buffer);
 				printf(command);
-				printf(": invalid command\n");
-			}
-			
-			printf("~$");
-		}
+				int id;
+				if((id = commandId(command))>=0) {
+					commandsFunction[id](params, cantParams);
+				}
+				else {
+					printf(command);
+					printf(": command not found\n");
+				}
+				for(int i=0; buffer[i]!=0; i++){		//vaciamos el buffer
+					buffer[i]=0;
+				}
+                printf("~$");
+                
+            } 
+            else{
+                buffer[idx++] = c;
+                putchar(c);
+            }
+        
+        }
 	}
-
 	return 0;
 }
