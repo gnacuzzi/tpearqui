@@ -13,7 +13,6 @@ static void dividebyzero(char** parameters, int cantParams){
 		printf("DivideByZero doesn't need parameters\n");
 		return;
 	}
-
 	dividebyzeroexception();
 }
 
@@ -62,16 +61,23 @@ int scanCommand(char* command, char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH
 	// buffer = "command arg1 arg2"
 	int i, j ,k;
 
-	for(i=0, j=0; buffer[i] != ' '; i++, j++ ){
+
+	for(i=0, j=0; buffer[i] != ' ' || buffer[i] == 0; i++, j++ ){
 		command[j] = buffer[i];
 	}
 
 	command[j] = 0;
 
+	if(buffer[i] == 0){
+		return 0;
+	}
+
 	while (buffer[i] == ' '){
 		i++;
 	}
 	
+	int toReturn=1;
+
 	for(j=0, k=0; buffer[i] != 0;){
 		if(buffer[i] != ' '){
 			parameters[j][k++] = buffer[i++];
@@ -80,12 +86,13 @@ int scanCommand(char* command, char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH
 			parameters[j][k]=0;
 			k=0;
 			j++;
+			toReturn++;
 			while (buffer[i] == ' '){
 				i++;
 			}
 		}
 	}
-	return j;
+	return toReturn;
 }
 
 int commandId(char* command){
@@ -109,25 +116,23 @@ int main() {
 	printf("~$");
 
 	char buffer[BUFFER_LENGTH] = {0}; 
-
 	int idx = 0;
 
 	while(1){
         char c  = readchar();
         
         if (c != -1 && c!= 0){
-            /*if(c == 8){
-                if(idx != 0){ 
-                    backspace();
+            if(c == '\b'){
+                if(idx > 0){ 
+                	putchar(c);
                     idx--;
                 }
-            } else*/ if(c == '\n'){ 
+            }else if(c == '\n'){ 
                 printf("\n");
                 buffer[idx] = 0;
 				char command[BUFFER_LENGTH]={0};
 				char params[MAX_PARAMETERS][PARAMETERS_LENGTH]={{0}};
                 int cantParams = scanCommand(command, params,buffer);
-				printf(command);
 				int id;
 				if((id = commandId(command))>=0) {
 					commandsFunction[id](params, cantParams);
@@ -139,10 +144,9 @@ int main() {
 				for(int i=0; buffer[i]!=0; i++){		//vaciamos el buffer
 					buffer[i]=0;
 				}
+				idx=0;
                 printf("~$");
-                
-            } 
-            else{
+            } else{
                 buffer[idx++] = c;
                 putchar(c);
             }
