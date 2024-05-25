@@ -37,6 +37,13 @@ static void time(char** parameters, int cantParams){
 	//completar
 }	
 
+static void clear(char** parameters, int cantParams){
+	if(cantParams != 0){
+		printf("Clear doesn't need parameters\n");
+		return;
+	}
+	clearscreen();
+}
 
 static void help(char** parameters, int cantParams){
 	if(cantParams != 0){
@@ -50,12 +57,13 @@ static void help(char** parameters, int cantParams){
 	"HELP						Display a menu with all the available commands in StarShell\n"
 	"INVALIDOPERATION			Command to verify the exception routine \"Invalid Opcode\"\n"
 	"LETTERSIZE					Change the letter size to your preferences\n"
-	"TIME						Show current time\n";
+	"TIME						Show current time\n"
+	"CLEAR						Clears the screen\n";
 	printf(manual);
 }
 
-static const char* allCommands[] = {"DIVIDEBYZERO", "ELIMINATOR", "HELP", "INVALIDOPERATION","LETTERSIZE", "TIME"};
-static void (*commandsFunction[])(char ** parameters, int cantParams) = {dividebyzero, eliminator, help, invalidoperation, lettersize, time}; //funciones a hacer
+static const char* allCommands[] = {"CLEAR", "DIVIDEBYZERO", "ELIMINATOR", "HELP", "INVALIDOPERATION","LETTERSIZE", "TIME"};
+static void (*commandsFunction[])(char ** parameters, int cantParams) = {clear, dividebyzero, eliminator, help, invalidoperation, lettersize, time}; //funciones a hacer
 
 int scanCommand(char* command, char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], char* buffer){
 	// buffer = "command arg1 arg2"
@@ -111,7 +119,7 @@ int commandId(char* command){
 
 
 int main() {
-	//clear(); //lo saque porque sino no se me imprimia la excepcion
+	//clearscreen(); //lo saque porque sino no se me imprimia la excepcion
 	printf("Wellcome to StarShell! Write which module you want to use. To see ours modules write help\n");
 	printf("~$");
 
@@ -130,21 +138,23 @@ int main() {
             }else if(c == '\n'){ 
                 printf("\n");
                 buffer[idx] = 0;
-				char command[BUFFER_LENGTH]={0};
-				char params[MAX_PARAMETERS][PARAMETERS_LENGTH]={{0}};
-                int cantParams = scanCommand(command, params,buffer);
-				int id;
-				if((id = commandId(command))>=0) {
-					commandsFunction[id](params, cantParams);
+				if(buffer[0] != 0){
+					char command[BUFFER_LENGTH]={0};
+					char params[MAX_PARAMETERS][PARAMETERS_LENGTH]={{0}};
+					int cantParams = scanCommand(command, params,buffer);
+					int id;
+					if((id = commandId(command))>=0) {
+						commandsFunction[id](params, cantParams);
+					}
+					else {
+						printf(command);
+						printf(": command not found\n");
+					}
+					for(int i=0; buffer[i]!=0; i++){		//vaciamos el buffer
+						buffer[i]=0;
+					}
+					idx=0;
 				}
-				else {
-					printf(command);
-					printf(": command not found\n");
-				}
-				for(int i=0; buffer[i]!=0; i++){		//vaciamos el buffer
-					buffer[i]=0;
-				}
-				idx=0;
                 printf("~$");
             } else{
                 buffer[idx++] = c;

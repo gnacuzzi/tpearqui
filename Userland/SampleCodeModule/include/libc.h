@@ -18,7 +18,7 @@ int strtoi(char* s, char ** end);
 
 int itoa(uint64_t n, char* buffer, int base);
 
-void clear();
+void clearscreen();
 
 char readchar();
 
