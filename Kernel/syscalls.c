@@ -36,7 +36,11 @@ uint64_t syscallDispatcher(uint64_t nr, uint64_t arg0, uint64_t arg1, uint64_t a
 
 static uint8_t syscall_read(uint64_t fd){
     //estoy asumiendo que siempre leo de entrada estandar
-    return getAscii();
+    switch (fd){
+        case STDIN:
+            return nextElement();
+    }
+    return 0;
     
 }
 
