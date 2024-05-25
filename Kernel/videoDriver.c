@@ -115,23 +115,17 @@ void draw_char(char c) {
         print_new_line();
         return;
     }
-/*
-    if (c == '\b') { // Manejar backspace
-        // Limitar el borrado solo a la línea actual
-        if (cursor_x > 2*CHAR_WIDTH) {
+	if (c == '\b') { // Borrar el caracter anterior 
+        if (cursor_x < CHAR_WIDTH && cursor_y > 0) { 
+            cursor_y -= CHAR_HEIGHT;
+            cursor_x = (VBE_mode_info->width / CHAR_WIDTH) * CHAR_WIDTH - CHAR_WIDTH;
+        } else {
             cursor_x -= CHAR_WIDTH;
-
-            // Borrar el carácter en la posición actual del cursor
-            for (int h = 0; h < CHAR_HEIGHT; h++) {
-                Color* pos = (Color*)getPtrToPixel(cursor_x, cursor_y + h);
-                for (int w = 0; w < CHAR_WIDTH; w++) {
-                    pos[w] = backColor; // Usar bgColor para borrar
-                }
-            }
         }
+        draw_rect(cursor_x, cursor_y, CHAR_WIDTH, CHAR_HEIGHT, backColor);
+        //_bufferIdx--;
         return;
     }
-*/
     if (c >= FIRST_CHAR && c <= LAST_CHAR) {
         const char* data = font + 32 * (c - 33);
         for (int h = 0; h < 16; h++) {
