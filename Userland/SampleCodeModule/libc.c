@@ -27,25 +27,25 @@ char readchar() {
 int scanf(char* buffer, uint64_t len){
     char c;
     uint64_t bIdx = 0;
-    while((c = readchar()) != '\n' && bIdx < len-1){
+    while(bIdx < len-1){
+        c = readchar();
         if (c == 0 || c == -1){
             return -1;
         }
-        if (c != 0) {
+        if (c != '\n') {
             if (c != '\b'){
                 buffer[bIdx++] = c;
                 putchar(c);
-            } else if(bIdx>0){
-                putchar('a');
+            } else if (bIdx>0){
                 buffer[--bIdx] = 0;
-                //printf(buffer);
-                //putchar('\b');
+                putchar('\b');
             }
+        }
+        else{
+            break;
         }
     }
     putchar('\n');
-    buffer[bIdx] = 0;
-    bIdx = 0;
     return 0;
 }
 

@@ -1,5 +1,5 @@
  #include <videoDriver.h>
- #include <keyBoard.h>
+ #include <keyboard.h>
  #include <lib.h>
 
  #define BUFFER_SIZE 256
