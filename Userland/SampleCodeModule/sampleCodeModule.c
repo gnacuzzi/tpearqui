@@ -62,7 +62,7 @@ int scanCommand(char* command, char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH
 	int i, j ,k;
 
 
-	for(i=0, j=0; buffer[i] != ' ' || buffer[i] == 0; i++, j++ ){
+	for(i=0, j=0; buffer[i] != ' ' && buffer[i] != 0; i++, j++ ){
 		command[j] = buffer[i];
 	}
 
