@@ -21,6 +21,7 @@ EXTERN irqDispatcher
 EXTERN exceptionDispatcher
 EXTERN keyboard_handler
 EXTERN syscallDispatcher
+EXTERN load_main
 
 SECTION .text
 
@@ -77,12 +78,19 @@ SECTION .text
 
 
 %macro exceptionHandler 1
-	pushState
-	;quizas aca haya que agregar algo!
+	pushState ; Se cargan 15 registros en stack
+
+	mov rsi, rsp
+	add rsi, 15*8 ; RIP 
+	mov rdx, rsp
+	add rdx, 18*8 ; RSP 
+
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher
 
 	popState
+	add rsp, 8
+	push load_main
 	iretq
 %endmacro
 

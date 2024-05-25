@@ -1,4 +1,4 @@
-
+#include <videoDriver.h>
 #define ZERO_EXCEPTION_ID 0
 #define INVALID_OP_CODE_ID 6
 
@@ -14,15 +14,17 @@ void exceptionDispatcher(int exception) {
 }
 
 static void zero_division() {
-	//clearScreen();
-	//draw_string(400, 50, "TUVISTE UNA ZERO DIVISION", 25, RED, BLACK);
-	//printRegs(); //programar
-	//clearScreen();
+	draw_string("\nerror: se lanzo una excepcion de division por zero\n");
+	//print_regs();
+	draw_string("\nse reiniciara la consola");
+	draw_char('\n');
+	draw_char('\n');
 }
 
 void invalid_op_code() {
-	//clearScreen();
-	//draw_string(400, 50, "TUVISTE UNA OP-CODE", 19, RED, BLACK);
-	//printRegs();
-	//clearScreen();
+	draw_string("\nerror: se lanzo una excepcion de operacion invalida\n");
+	//print_regs();
+	draw_string("\nse reiniciara la consola");
+	draw_char('\n');
+	draw_char('\n');
 }

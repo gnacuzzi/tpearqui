@@ -111,7 +111,7 @@ int commandId(char* command){
 
 
 int main() {
-	clear();
+	//clear(); //lo saque porque sino no se me imprimia la excepcion
 	printf("Wellcome to StarShell! Write which module you want to use. To see ours modules write help\n");
 	printf("~$");
 
