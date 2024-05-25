@@ -1,6 +1,7 @@
 #include <keyboard.h>
 #include <stdint.h>
 #include <lib.h>
+#include <videoDriver.h>
 
 #define BUFFER_CAPACITY 10                      /* Longitud maxima del vector _buffer */
 #define HOTKEY 29                               /* Scancode para el snapshot de registros */
@@ -21,6 +22,7 @@ static int getBufferIndex(int offset){
 
 void keyboard_handler(){
     uint8_t key = getKey();
+    //draw_char(charHexMap[key]); // Para debuggear pero imprime
     if(_bufferSize < BUFFER_CAPACITY -1){
         if(!(key & 0x80)){
             if (key == HOTKEY) {
