@@ -60,6 +60,7 @@ static const char* allCommands[] = {"dividebyzero", "eliminator", "help", "inval
 static void (*commandsFunction[])(char ** parameters) = {dividebyzero, eliminator, help, invalidoperation, lettersize, time}; //funciones a hacer
 
 void scanCommand(char* command, char **parameters, char* buffer){
+	printf(buffer);
 	// buffer = "command arg1 arg2"
 	int i, j ,k;
 
@@ -85,7 +86,8 @@ void scanCommand(char* command, char **parameters, char* buffer){
 				i++;
 			}
 		}
-	}
+	}	
+	printf(command);
 
 }
 
@@ -112,7 +114,8 @@ int main() {
 	
 	while(1){
 		char buf[BUFFER_LENGTH] = {0};
-		int rta = scanf(buf, BUFFER_LENGTH);
+		int rta = scanf(&buf, BUFFER_LENGTH);
+		printf(buf);
 		if (rta != -1){
 			char command[BUFFER_LENGTH] = {0};
 			char ** parameters; //arreglo de arreglo de chars para cada parametro
