@@ -3,7 +3,7 @@
 #include "include/libc.h"
 #include "include/userasm.h"
 
-#define BUFFER_LENGTH 20
+#define BUFFER_LENGTH 256
 #define MAX_PARAMETERS 1  //todavia no sabemos cuantos parametros se van a enviar como maximo
 #define PARAMETERS_LENGTH 20
 static char lineBuffer[256] = {0}; 
@@ -112,33 +112,25 @@ int main() {
 	
 	while(1){
 		char buf[BUFFER_LENGTH] = {0};
-		char c = readchar();
-		if(c!=-1 && c!=0){
-			if(c != '\n'){
-				putchar(c);
+		int rta = scanf(buf, BUFFER_LENGTH);
+		if (rta != -1){
+				/*
+			char command[BUFFER_LENGTH] = {0};
+			char ** parameters; //arreglo de arreglo de chars para cada parametro
+			scanCommand(command, parameters, buf);
+
+			int id = commandId(command);
+			if(id >= 0){
+				commandsFunction[id](parameters);
 			}
 			else{
-				/*
-				//scanf(buf, BUFFER_LENGTH);
-				char command[BUFFER_LENGTH] = {0};
-				char ** parameters; //arreglo de arreglo de chars para cada parametro
-				scanCommand(command, parameters, buf);
-
-				int id = commandId(command);
-				if(id >= 0){
-					commandsFunction[id](parameters);
-				}
-				else{
-					printf(command);
-					printf(": invalid command\n");
-				}
-				*/
-				printf("\n~$");
+				printf(command);
+				printf(": invalid command\n");
 			}
+			*/
+			printf("~$");
 		}
 	}
-	
-		
-	
+
 	return 0;
 }

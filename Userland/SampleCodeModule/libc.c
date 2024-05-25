@@ -2,6 +2,7 @@
 #include "include/syscall.h"
 
 #include <stdarg.h>
+#define MAX_CHARS 256
 
 static void va_printf(const char* fmt, va_list args);
 
@@ -22,16 +23,31 @@ char readchar() {
     read_char(localBuff);
     return localBuff[0];
 }
-/*
-void scanf(char* buffer, uint64_t len){
-    read(buffer, len);
-    for (int i = 0; i < len; i++){
-        getChar();
+
+int scanf(char* buffer, uint64_t len){
+    char c;
+    uint64_t bIdx = 0;
+    while((c = readchar()) != '\n' && bIdx < len-1){
+        if (c == 0 || c == -1){
+            return -1;
+        }
+        if (c != 0) {
+            if (c != '\b'){
+                buffer[bIdx++] = c;
+                putchar(c);
+            } else if(bIdx>0){
+                putchar('a');
+                buffer[--bIdx] = 0;
+                //printf(buffer);
+                //putchar('\b');
+            }
+        }
     }
-
+    putchar('\n');
+    buffer[bIdx] = 0;
+    bIdx = 0;
+    return 0;
 }
-*/
-
 
 // https://www.equestionanswers.com/c/c-printf-scanf-working-principle.php
 // usamos esta biblioteca para el manejo de argumentos variables

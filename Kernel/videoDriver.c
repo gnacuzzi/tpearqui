@@ -52,6 +52,7 @@ uint16_t cursor_x = 0;
 uint16_t cursor_y = 0;
 
 Color penColor = {255, 255, 255};
+Color backColor = {0, 0, 0};
 
 static void* getPtrToPixel(uint16_t x, uint16_t y) {
     return (void*)(VBE_mode_info->framebuffer + 3 * (x + (y * (uint64_t)VBE_mode_info->width)));
@@ -96,14 +97,14 @@ void print_new_line(void){
 	cursor_x = 0; // pen x is set to full left.
 
     // If there is space for another line, we simply advance the pen y. Otherwise, we move up the entire screen and clear the lower part.
-    if (cursor_y + (2*CHAR_HEIGHT) <= VBE_mode_info->height) {
+    if (cursor_y + (2 * CHAR_HEIGHT) <= VBE_mode_info->height) {
         cursor_y += CHAR_HEIGHT;
     } else {
         void* dst = (void*)((uint64_t)VBE_mode_info->framebuffer);
         void* src = (void*)(dst + 3 * (CHAR_HEIGHT * (uint64_t)VBE_mode_info->width));
         uint64_t len = 3 * ((uint64_t)VBE_mode_info->width * (VBE_mode_info->height - CHAR_HEIGHT));
         memcpy(dst, src, len);
-        memset(dst+len, 0, 3 * (uint64_t)VBE_mode_info->width * CHAR_HEIGHT);
+        memset(dst + len, 0, 3 * (uint64_t)VBE_mode_info->width * CHAR_HEIGHT);
     }
 }
 
@@ -114,28 +115,45 @@ void draw_char(char c) {
         print_new_line();
         return;
     }
+/*
+    if (c == '\b') { // Manejar backspace
+        // Limitar el borrado solo a la línea actual
+        if (cursor_x > 2*CHAR_WIDTH) {
+            cursor_x -= CHAR_WIDTH;
 
+            // Borrar el carácter en la posición actual del cursor
+            for (int h = 0; h < CHAR_HEIGHT; h++) {
+                Color* pos = (Color*)getPtrToPixel(cursor_x, cursor_y + h);
+                for (int w = 0; w < CHAR_WIDTH; w++) {
+                    pos[w] = backColor; // Usar bgColor para borrar
+                }
+            }
+        }
+        return;
+    }
+*/
     if (c >= FIRST_CHAR && c <= LAST_CHAR) {
-	    const char* data = font + 32*(c-33);
-	    for (int h=0; h<16; h++) {
-    		Color* pos = (Color*)getPtrToPixel(cursor_x, cursor_y+h);
-    		if (*data & 0b00000001) pos[0] = penColor;
-    		if (*data & 0b00000010) pos[1] = penColor;
-    		if (*data & 0b00000100) pos[2] = penColor;
-    		if (*data & 0b00001000) pos[3] = penColor;
-    		if (*data & 0b00010000) pos[4] = penColor;
-    		if (*data & 0b00100000) pos[5] = penColor;
-    		if (*data & 0b01000000) pos[6] = penColor;
-    		if (*data & 0b10000000) pos[7] = penColor;
-    		data++;
-    		if (*data & 0b00000001) pos[8] = penColor;
-    		data++;
-    	}
+        const char* data = font + 32 * (c - 33);
+        for (int h = 0; h < 16; h++) {
+            Color* pos = (Color*)getPtrToPixel(cursor_x, cursor_y + h);
+            if (*data & 0b00000001) pos[0] = penColor;
+            if (*data & 0b00000010) pos[1] = penColor;
+            if (*data & 0b00000100) pos[2] = penColor;
+            if (*data & 0b00001000) pos[3] = penColor;
+            if (*data & 0b00010000) pos[4] = penColor;
+            if (*data & 0b00100000) pos[5] = penColor;
+            if (*data & 0b01000000) pos[6] = penColor;
+            if (*data & 0b10000000) pos[7] = penColor;
+            data++;
+            if (*data & 0b00000001) pos[8] = penColor;
+            data++;
+        }
     }
 
     cursor_x += CHAR_WIDTH;
-    if (cursor_x > VBE_mode_info->width - CHAR_WIDTH)
+    if (cursor_x > VBE_mode_info->width - CHAR_WIDTH) {
         print_new_line();
+    }
 }
 
 

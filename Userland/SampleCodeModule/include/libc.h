@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-void scanf(char* buffer, uint64_t len);
+int scanf(char* buffer, uint64_t len);
 
 void printf(const char * fmt, ...);
 
