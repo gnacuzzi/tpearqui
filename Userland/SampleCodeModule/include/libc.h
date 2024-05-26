@@ -25,5 +25,6 @@ char readchar();
 
 bool isNumber(char ch);
 
+char scanInput();
 
 #endif

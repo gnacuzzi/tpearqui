@@ -135,3 +135,7 @@ int strcmp(const char * s1, const char * s2){
 bool isNumber(char ch){
     return ch >= '0' && ch <= '9';
 }
+
+void clearscreen(){
+    clear_screen();
+}

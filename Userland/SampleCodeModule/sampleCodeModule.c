@@ -3,6 +3,7 @@
 #include "include/libc.h"
 #include "include/userasm.h"
 #include "include/syscall.h"
+#include "include/eliminator.h"
 
 
 #define BUFFER_LENGTH 256
@@ -19,7 +20,11 @@ static void dividebyzero(char** parameters, int cantParams){
 }
 
 static void eliminator(char** parameters, int cantParams){
-	//completar
+	if(cantParams != 0){
+		printf("Eliminator doesn't need parameters\n");
+		return;
+	}
+	start_eliminator();
 }
 
 static void invalidoperation(char** parameters, int cantParams){
@@ -60,7 +65,7 @@ static void clear(char** parameters, int cantParams){
 		printf("Clear doesn't need parameters\n");
 		return;
 	}
-	clear_screen();
+	clearscreen();
 }
 
 static void help(char** parameters, int cantParams){
