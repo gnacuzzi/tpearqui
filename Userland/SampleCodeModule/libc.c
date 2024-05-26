@@ -138,6 +138,6 @@ int strcmp(const char * s1, const char * s2){
 	return *s1 - *s2;    
 }
 
-void clear(){
+void clearscreen(){
     clear_screen();
 }
