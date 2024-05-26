@@ -12,16 +12,16 @@ void print_regs(uint64_t rip, uint64_t rsp, uint64_t * newRsp) {
 	//creo que itoa hace cualquier cosa
 	char buffer[100];
 	draw_string("RIP: ");
-	//draw_string(int_to_string(rip, buffer, 10));
+	//draw_string(int_to_string(rip, buffer, 16));
 	draw_string("\n");
 	draw_string("RSP: ");
-	//draw_string(int_to_string(rsp, buffer, 10));
+	//draw_string(int_to_string(rsp, buffer, 16));
 	draw_string("\n");
 	for (int i = 0; i < sizeof(_regNames)/sizeof(char *); i++){
 		draw_string(_regNames[i]);
 		draw_char(':');
 		draw_char(' ');
-		//draw_string(int_to_string(newRsp[i], buffer, 10));
+		//draw_string(int_to_string(*(newRsp - i), buffer, 16));
 		draw_char('\n');
 	}
 }

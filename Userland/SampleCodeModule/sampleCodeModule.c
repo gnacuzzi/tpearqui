@@ -34,7 +34,13 @@ static void lettersize(char** parameters, int cantParams){
 }
 
 static void time(char** parameters, int cantParams){
-	//completar
+	if(cantParams != 0){
+		printf("time doesn't need parameters\n");
+		return;
+	}
+	uint32_t seconds = get_seconds();
+    uint32_t h = seconds / 3600, m = seconds % 3600 / 60, s = seconds % 3600 % 60;
+    printf("%2d:%2d:%2d\r\n", h, m, s);
 }	
 
 
