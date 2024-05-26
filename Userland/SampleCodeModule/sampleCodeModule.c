@@ -2,6 +2,8 @@
 
 #include "include/libc.h"
 #include "include/userasm.h"
+#include "include/syscall.h"
+
 
 #define BUFFER_LENGTH 256
 #define MAX_PARAMETERS 2  //todavia no sabemos cuantos parametros se van a enviar como maximo
@@ -30,7 +32,15 @@ static void invalidoperation(char** parameters, int cantParams){
 }
 
 static void lettersize(char** parameters, int cantParams){
-	//completar
+	if(cantParams != 1){
+		printf("You must insert ONE parameter indicating the letter size you desire\n");
+	}else if (parameters[0] > 5 || parameters[0] < 1)
+	{
+		printf("The letter size must be a number between 1 and 5\n");
+	}else{
+		setlettersize(parameters[0]);	
+	}
+	return;
 }
 
 static void time(char** parameters, int cantParams){
@@ -50,7 +60,7 @@ static void clear(char** parameters, int cantParams){
 		printf("Clear doesn't need parameters\n");
 		return;
 	}
-	clearscreen();
+	clear_screen();
 }
 
 static void help(char** parameters, int cantParams){
@@ -96,7 +106,11 @@ int scanCommand(char* command, char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH
 
 	for(j=0, k=0; buffer[i] != 0;){
 		if(buffer[i] != ' '){
-			parameters[j][k++] = buffer[i++];
+			if(!isNumber(buffer[i])){
+				parameters[j][k++] = buffer[i++];
+			}else{
+				parameters[j][k++] = (buffer[i++]-'0');		//lo paso de su ascii
+			}
 		}
 		else{
 			parameters[j][k]=0;

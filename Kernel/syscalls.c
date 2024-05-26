@@ -13,11 +13,13 @@
 #define WRITE 1
 #define CLEAR 2
 #define TIME 3
+#define LETTERSIZE 4
 
 static void syscall_write(uint32_t fd, char c);
 static void syscall_read( uint64_t buffer);
 static void syscall_clear();
 static uint32_t syscall_time();
+static void syscall_lettersize(int size);
 
 
 
@@ -33,6 +35,9 @@ uint64_t syscallDispatcher(uint64_t nr, uint64_t arg0, uint64_t arg1, uint64_t a
             break;
         case TIME:
             return syscall_time();
+            break;
+        case LETTERSIZE:
+            syscall_lettersize((int) arg0);
             break;
 	}
 	return 0;
@@ -63,4 +68,8 @@ static uint32_t syscall_time(){
     uint8_t hours, minutes, seconds;
     get_time(&hours, &minutes, &seconds);
     return seconds + minutes * 60 + ((hours + 24 - 3) % 24) * 3600;
+}
+
+static void syscall_lettersize(int size){
+    set_lettersize(size);
 }

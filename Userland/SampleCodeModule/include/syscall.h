@@ -12,4 +12,7 @@ void clear_screen();
 
 uint8_t get_seconds();
 
+setlettersize(int size);	
+
+
 #endif

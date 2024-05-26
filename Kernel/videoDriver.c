@@ -4,6 +4,15 @@
 #include <videoDriver.h>
 #include <lib.h>
 
+
+/* The width of a character in pixels. */
+static int CHAR_WIDTH = 9;
+/* The height of a character in pixels. */
+static int CHAR_HEIGHT = 16;
+
+static int DEFAULT_LETTER_SIZE = 1;
+
+
 struct vbe_mode_info_structure {
 	uint16_t attributes;		// deprecated, only bit 7 should be of interest to you, and it indicates the mode supports a linear frame buffer.
 	uint8_t window_a;			// deprecated
@@ -157,6 +166,15 @@ void draw_string(const char* str) {
         str++;
     }
 }
+
+void set_lettersize(int size){
+    CHAR_HEIGHT -= DEFAULT_LETTER_SIZE;
+    CHAR_WIDTH -= DEFAULT_LETTER_SIZE;
+    DEFAULT_LETTER_SIZE = size;
+    CHAR_HEIGHT += DEFAULT_LETTER_SIZE;
+    CHAR_WIDTH += DEFAULT_LETTER_SIZE;
+}
+
 
 //falta lo de los colores de las fuentes
 //falta lo del tamaño de las fuentes

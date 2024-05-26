@@ -4,10 +4,7 @@
 #include <stdint.h>
 #define BLACK 0x000000
 #define WHITE 0xFFFFFF
-/* The width of a character in pixels. */
-#define CHAR_WIDTH 9
-/* The height of a character in pixels. */
-#define CHAR_HEIGHT 16
+
 typedef struct {
 	uint8_t b;
 	uint8_t g;
@@ -21,5 +18,6 @@ void draw_rect(int x, int y, int width, int height, Color color);
 void clear_screen();
 static void* getPtrToPixel(uint16_t x, uint16_t y);
 void print_new_line(void);
+void set_lettersize(int size);
 
 #endif

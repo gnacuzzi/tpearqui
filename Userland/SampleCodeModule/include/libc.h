@@ -2,6 +2,7 @@
 #define STDIO_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 
 void printf(const char * fmt, ...);
@@ -21,6 +22,8 @@ int itoa(int n, char* buffer, int base);
 void clearscreen();
 
 char readchar();
+
+bool isNumber(char ch);
 
 
 #endif

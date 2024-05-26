@@ -132,6 +132,6 @@ int strcmp(const char * s1, const char * s2){
 	return *s1 - *s2;    
 }
 
-void clearscreen(){
-    clear_screen();
+bool isNumber(char ch){
+    return ch >= '0' && ch <= '9';
 }

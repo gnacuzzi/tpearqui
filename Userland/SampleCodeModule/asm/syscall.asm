@@ -1,8 +1,8 @@
 GLOBAL write
 GLOBAL read_char
 GLOBAL clear_screen
-
 GLOBAL get_seconds
+GLOBAL setlettersize
 
 read_char:
     mov rax, 0
@@ -22,5 +22,10 @@ clear_screen:
 
 get_seconds:
     mov rax, 3
+    int 80h
+    ret
+
+setlettersize:
+    mov rax, 4
     int 80h
     ret
