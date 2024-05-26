@@ -40,7 +40,8 @@ static void time(char** parameters, int cantParams){
 	}
 	uint32_t seconds = get_seconds();
     uint32_t h = seconds / 3600, m = seconds % 3600 / 60, s = seconds % 3600 % 60;
-    printf("%2d:%2d:%2d\r\n", h, m, s);
+    printf("%d:%d:%d\r\n", h, m, s);
+	//creo que no me funciona el printf o devuelvo mal
 }	
 
 static void clear(char** parameters, int cantParams){

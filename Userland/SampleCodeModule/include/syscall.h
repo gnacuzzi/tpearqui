@@ -10,6 +10,6 @@ uint8_t read_char(int fd);
 
 void clear_screen();
 
-uint32_t get_seconds();
+uint8_t get_seconds();
 
 #endif

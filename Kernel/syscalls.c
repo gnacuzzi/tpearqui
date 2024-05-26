@@ -3,6 +3,7 @@
 #include <keyboard.h>
 
 
+
 #define STDIN 0
 #define STDOUT 1
 #define STDERR 2
@@ -11,10 +12,12 @@
 #define READ 0
 #define WRITE 1
 #define CLEAR 2
+#define TIME 3
 
 static void syscall_write(uint32_t fd, char c);
 static void syscall_read( uint64_t buffer);
 static void syscall_clear();
+static uint32_t syscall_time();
 
 
 
@@ -27,6 +30,9 @@ uint64_t syscallDispatcher(uint64_t nr, uint64_t arg0, uint64_t arg1, uint64_t a
             break;
         case CLEAR:
             syscall_clear();
+            break;
+        case TIME:
+            return syscall_time();
             break;
 	}
 	return 0;
@@ -51,4 +57,10 @@ static void syscall_write(uint32_t fd, char c){
 
 static void syscall_clear(){
     clear_screen();
+}
+
+static uint32_t syscall_time(){
+    uint8_t hours, minutes, seconds;
+    get_time(&hours, &minutes, &seconds);
+    return seconds + minutes * 60 + ((hours + 24 - 3) % 24) * 3600;
 }
