@@ -16,7 +16,7 @@ void printchars(char c, int n);
 
 int strtoi(char* s, char ** end);
 
-int itoa(uint64_t n, char* buffer, int base);
+int itoa(int n, char* buffer, int base);
 
 void clearscreen();
 

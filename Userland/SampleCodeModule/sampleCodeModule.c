@@ -40,6 +40,7 @@ static void time(char** parameters, int cantParams){
 	}
 	uint32_t seconds = get_seconds();
     uint32_t h = seconds / 3600, m = seconds % 3600 / 60, s = seconds % 3600 % 60;
+	printf("Current time is:\n");
     printf("%d:%d:%d\r\n", h, m, s);
 	//creo que no me funciona el printf o devuelvo mal
 }	
@@ -59,13 +60,13 @@ static void help(char** parameters, int cantParams){
 	}
 
 	const char* manual=
-	"DIVIDEBYZERO				Command to verify the exception routine \"Divide by zero\"\n"
-	"ELIMINATOR					Challenge yourself or you and a friend to an elimination game\n"
-	"HELP						Display a menu with all the available commands in StarShell\n"
-	"INVALIDOPERATION			Command to verify the exception routine \"Invalid Opcode\"\n"
-	"LETTERSIZE					Change the letter size to your preferences\n"
-	"TIME						Show current time\n"
-	"CLEAR						Clears the screen\n";
+	"DIVIDEBYZERo               Command to verify the exception routine \"Divide by zero\"\n"
+	"ELIMINATOR                 Challenge yourself or you and a friend to an elimination game\n"
+	"HELP                       Display a menu with all the available commands in StarShell\n"
+	"INVALIDOPERATION           Command to verify the exception routine \"Invalid Opcode\"\n"
+	"LETTERSIZE                 Change the letter size to your preferences\n"
+	"TIME                       Show current time\n"
+	"CLEAR                      Clears the screen\n";
 	printf(manual);
 }
 
@@ -163,7 +164,7 @@ int main() {
 					idx=0;
 				}
                 printf("~$");
-            } else{
+            } else if(c != '\t'){
                 buffer[idx++] = c;
                 putchar(c);
             }

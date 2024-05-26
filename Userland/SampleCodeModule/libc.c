@@ -35,7 +35,7 @@ void printf(const char * fmt, ...){
 }
 
 static void va_printf(const char* fmt, va_list args){
-    char buffer[] = {0};
+    char buffer[MAX_CHARS] = {0};
     char * aux = fmt;           //puntero
     while(*aux){
         if(*aux == '%'){
@@ -50,13 +50,13 @@ static void va_printf(const char* fmt, va_list args){
                 break;
             
             case 'd':    //es un entero
-                len = itoa(va_arg(args, uint64_t), buffer, 10);     //esta en base 10
+                len = itoa(va_arg(args, int), buffer, 10);     //esta en base 10
                 printchars('0', dx-len);
                 puts(buffer);
                 break;
             
             case 'x':       //hexadcimal
-                len = itoa(va_arg(args, uint64_t), buffer, 10);     //esta en base 16
+                len = itoa(va_arg(args, int), buffer, 16);     //esta en base 16
                 printchars('0', dx-len);
                 puts(buffer);
                 break;
@@ -85,14 +85,14 @@ void puts(const char* s){
 }
 
 void printchars(char c, int n){
-    while (n>0)
+    while (n>=0)
     {
         putchar(c);
         n--;
     }    
 }
 
-int itoa(uint64_t n, char* buffer, int base){
+int itoa(int n, char* buffer, int base){
     if(n==0){
         buffer[0] = '0';
         buffer[1] = '\0';
@@ -111,17 +111,11 @@ int itoa(uint64_t n, char* buffer, int base){
     len += log(n, base);
     while( n!=0){
         int res = n%base;
-        if(res > 9){
-            buffer[len-i-1]= (res-10) + 'A';
-        } else{
-            buffer[len-i-1] = res + '0';
-        }
+        buffer[len - i++ - 1] = (res > 9)? (res-10) + 'A' : res + '0';
         n /= base;
-        i++;
     }
     buffer[i] = '\0';
     return len;
-
 }
 
 int strtoi(char* s, char ** end){
