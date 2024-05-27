@@ -133,7 +133,7 @@ void draw_char(char c) {
     }
     if (c >= FIRST_CHAR && c <= LAST_CHAR) {
         const char* data = font + 32 * (c - FIRST_CHAR);
-        for (int h = 0; h < 16; h++) { // Leer filas al revés
+        for (int h = 0; h < 16; h++) { 
             for (int w = 0; w < 8; w++) {
                 if (*data & (1 << w)) {
                     draw_rect(cursor_x + w * DEFAULT_LETTER_SIZE, cursor_y + h * DEFAULT_LETTER_SIZE, DEFAULT_LETTER_SIZE, DEFAULT_LETTER_SIZE, penColor);

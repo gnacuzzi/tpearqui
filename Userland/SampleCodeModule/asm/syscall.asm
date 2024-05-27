@@ -4,6 +4,7 @@ GLOBAL clear_screen
 GLOBAL get_seconds
 GLOBAL setlettersize
 GLOBAL getRegs
+GLOBAL get_control
 
 read_char:
     mov rax, 0
@@ -33,5 +34,10 @@ setlettersize:
 
 getRegs:
     mov rax, 5
+    int 80h
+    ret
+
+get_control:
+    mov rax, 6
     int 80h
     ret

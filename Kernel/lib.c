@@ -77,5 +77,5 @@ void copy_registers(uint64_t * rsp) {
 void print_regs(uint64_t rip, uint64_t rsp, uint64_t * newRsp) {
 	printf("RIP: 0x%x\nRSP: 0x%x\n", rip, rsp);
     for (int i = 0; i < sizeof(regs)/sizeof(char *); i++)
-        printf("%s: 0x%x\n", regs[i], *(newRsp - i));
+        printf("%s: 0x%x ", regs[i], *(newRsp - i));
 }

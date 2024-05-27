@@ -96,8 +96,13 @@ static void registers(char **parameters, int cantParams){
 	int len = sizeof(regs)/sizeof(char *);
     uint64_t snapShot[len];
     getRegs(snapShot);
-    for (int i = 0; i < len; i++){
-        printf("%s: 0x%x\n", regs[i], snapShot[i]);
+	if (get_control()){
+		for (int i = 0; i < len; i++){
+        	printf("%s: 0x%x  ", regs[i], snapShot[i]);
+		}
+		printf("\n");
+	}else {
+		printf("Registers are not available, you need to press control.\n");
 	}
 }
 

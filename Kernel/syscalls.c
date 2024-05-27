@@ -13,6 +13,7 @@
 #define TIME 3
 #define LETTERSIZE 4
 #define REGISTERS 5
+#define CONTROL 6
 
 static void syscall_write(uint32_t fd, char c);
 static void syscall_read( uint64_t buffer);
@@ -20,6 +21,7 @@ static void syscall_clear();
 static uint32_t syscall_time();
 static void syscall_lettersize(int size);
 static void syscall_registers(uint64_t * buffer);
+static int syscall_control();
 
 
 
@@ -42,6 +44,9 @@ uint64_t syscallDispatcher(uint64_t nr, uint64_t arg0, uint64_t arg1, uint64_t a
             break;
         case REGISTERS:
             syscall_registers((uint64_t *) arg0);
+            break;
+        case CONTROL:
+            return syscall_control();
             break;
 	}
 	return 0;
@@ -83,4 +88,8 @@ static void syscall_registers(uint64_t * buffer){
     for(int i = 0; i < REGS; i++)
         buffer[i] = snapshot[i];
     return buffer;
+}
+
+static int syscall_control(){
+    return get_control();
 }

@@ -3,7 +3,9 @@
  #include <lib.h>
 
  #define BUFFER_SIZE 256
-
+ 
+int get_control();
+int control = 0;
 
 static const char keyBoardTable[256] = 
     {       
@@ -39,6 +41,7 @@ void keyboard_handler(){ // Every time someone presses a key this function gets 
     uint8_t tecla = getKey();
     if(tecla <=0x79){ // 0x79 because its the code for the biggest 'press'. We do this to avoid getting the releas of a key into the buffer
         if (tecla == 29) {
+            control = 1;
             save_registers();
             return;
         }
@@ -50,4 +53,8 @@ void keyboard_handler(){ // Every time someone presses a key this function gets 
         buff[rear++] = keyBoardTable[tecla];
         cantElems++;
     }
+}
+
+int get_control(){
+    return control;
 }
