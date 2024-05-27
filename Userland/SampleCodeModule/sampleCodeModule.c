@@ -39,9 +39,8 @@ static void invalidoperation(char** parameters, int cantParams){
 static void lettersize(char** parameters, int cantParams){
 	if(cantParams != 1){
 		printf("You must insert ONE parameter indicating the letter size you desire\n");
-	}else if (parameters[0] > 5 || parameters[0] < 1)
-	{
-		printf("The letter size must be a number between 1 and 5\n");
+	}else if (parameters[0] > 3 || parameters[0] < 1){
+		printf("The letter size must be a number between 1 and 3\n");
 	}else{
 		setlettersize(parameters[0]);	
 	}
