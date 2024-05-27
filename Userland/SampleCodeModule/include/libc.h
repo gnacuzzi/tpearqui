@@ -27,4 +27,8 @@ bool isNumber(char ch);
 
 char scanInput();
 
+int ctoi(char  s);
+
+int scanf(char* buffer);
+
 #endif

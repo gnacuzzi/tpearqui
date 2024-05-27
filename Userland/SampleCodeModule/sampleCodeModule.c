@@ -173,44 +173,26 @@ int main() {
 	printf("~$");
 
 	char buffer[BUFFER_LENGTH] = {0}; 
-	int idx = 0;
-
 	while(1){
-        char c  = readchar();
+		int rta = scanf(buffer);
+		if(rta == 1){
+			char command[BUFFER_LENGTH]={0};
+			char params[MAX_PARAMETERS][PARAMETERS_LENGTH]={{0}};
+			int cantParams = scanCommand(command, params,buffer);
+			int id;
+			if((id = commandId(command))>=0) {
+				commandsFunction[id](params, cantParams);
+			}
+			else {
+				printf(command);
+				printf(": command not found\n");
+			}
+			for(int i=0; buffer[i]!=0; i++){		//vaciamos el buffer
+				buffer[i]=0;
+			}
+		}
+		printf("~$");
         
-        if (c != -1 && c!= 0){
-            if(c == '\b'){
-                if(idx > 0){ 
-                	putchar(c);
-                    idx--;
-                }
-            }else if(c == '\n'){ 
-                printf("\n");
-                buffer[idx] = 0;
-				if(buffer[0] != 0){
-					char command[BUFFER_LENGTH]={0};
-					char params[MAX_PARAMETERS][PARAMETERS_LENGTH]={{0}};
-					int cantParams = scanCommand(command, params,buffer);
-					int id;
-					if((id = commandId(command))>=0) {
-						commandsFunction[id](params, cantParams);
-					}
-					else {
-						printf(command);
-						printf(": command not found\n");
-					}
-					for(int i=0; buffer[i]!=0; i++){		//vaciamos el buffer
-						buffer[i]=0;
-					}
-					idx=0;
-				}
-                printf("~$");
-            } else if(c != '\t'){
-                buffer[idx++] = c;
-                putchar(c);
-            }
-        
-        }
-	}
+    }
 	return 0;
 }

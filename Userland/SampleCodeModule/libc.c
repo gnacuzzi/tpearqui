@@ -139,3 +139,39 @@ bool isNumber(char ch){
 void clearscreen(){
     clear_screen();
 }
+
+int ctoi(char  s)
+{
+    int num = 0;
+    if (isNumber(s))
+    {
+        num = num * 10 + s - '0';
+    }
+    return num;
+}
+
+int scanf(char* buffer){
+    int idx = 0;
+    while (1){
+        char c  = readchar();  
+        if (c != -1 && c!= 0){
+            if(c == '\b'){
+                if(idx > 0){ 
+                    putchar(c);
+                    idx--;
+                }
+            }else if(c == '\n'){ 
+                printf("\n");
+                buffer[idx] = 0;
+                if(buffer[0] != 0){
+                    return 1;
+                }
+                return 0;
+            } else if(c != '\t'){
+                buffer[idx++] = c;
+                putchar(c);
+            }
+        }
+    }
+    return -1;
+}
