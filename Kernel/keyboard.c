@@ -3,6 +3,8 @@
  #include <lib.h>
 
  #define BUFFER_SIZE 256
+
+
 static const char keyBoardTable[256] = 
     {       
           0,    27,  '1',  '2',  '3',  '4',  '5',  '6',   '7',  '8',  
@@ -36,7 +38,10 @@ char nextElement(){ // returns the first element pushed into the buffer in crono
 void keyboard_handler(){ // Every time someone presses a key this function gets called and inserts into the circular buffer
     uint8_t tecla = getKey();
     if(tecla <=0x79){ // 0x79 because its the code for the biggest 'press'. We do this to avoid getting the releas of a key into the buffer
-        
+        if (tecla == 29) {
+            save_registers();
+            return;
+        }
         if (cantElems == BUFFER_SIZE){
             return;
         }

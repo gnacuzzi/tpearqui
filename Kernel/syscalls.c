@@ -1,25 +1,26 @@
 #include <stdint.h>
 #include <videoDriver.h>
 #include <keyboard.h>
-
-
+#include <lib.h>
 
 #define STDIN 0
 #define STDOUT 1
 #define STDERR 2
-
 
 #define READ 0
 #define WRITE 1
 #define CLEAR 2
 #define TIME 3
 #define LETTERSIZE 4
+#define REGISTERS 5
 
 static void syscall_write(uint32_t fd, char c);
 static void syscall_read( uint64_t buffer);
 static void syscall_clear();
 static uint32_t syscall_time();
 static void syscall_lettersize(int size);
+static void syscall_registers(uint64_t * buffer);
+
 
 
 
@@ -38,6 +39,9 @@ uint64_t syscallDispatcher(uint64_t nr, uint64_t arg0, uint64_t arg1, uint64_t a
             break;
         case LETTERSIZE:
             syscall_lettersize((int) arg0);
+            break;
+        case REGISTERS:
+            syscall_registers((uint64_t *) arg0);
             break;
 	}
 	return 0;
@@ -72,4 +76,11 @@ static uint32_t syscall_time(){
 
 static void syscall_lettersize(int size){
     set_lettersize(size);
+}
+
+static void syscall_registers(uint64_t * buffer){
+    uint64_t * snapshot = get_snapshot();
+    for(int i = 0; i < REGS; i++)
+        buffer[i] = snapshot[i];
+    return buffer;
 }

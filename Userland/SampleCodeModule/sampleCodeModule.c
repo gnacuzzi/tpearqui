@@ -93,7 +93,7 @@ static void registers(char **parameters, int cantParams){
 		printf("Registers doesn't need parameters\n");
 		return;
 	}
-	int len = 17;
+	int len = sizeof(regs)/sizeof(char *);
     uint64_t snapShot[len];
     getRegs(snapShot);
     for (int i = 0; i < len; i++){

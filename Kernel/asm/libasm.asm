@@ -2,6 +2,8 @@ GLOBAL cpuVendor
 GLOBAL getKey
 
 GLOBAL get_time
+GLOBAL save_registers
+EXTERN copy_registers
 
 section .text
 	
@@ -68,4 +70,9 @@ get_time:
 
     mov rsp, rbp
     pop rbp
+    ret
+
+save_registers:
+    mov rdi, rbp 
+    call copy_registers
     ret
