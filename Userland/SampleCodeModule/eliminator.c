@@ -12,9 +12,13 @@ static int LEVEL= 4;
 
 
 #define MSG_START "ELIMINATOR (ARQUI'S VERSION)\n PLAYERS:%d \n SPEED: %d \n LEVEL: %d \n\n [SPACE] to begin game \n [ENTER] to change \n [ESCAPE] to exit \n"
-#define MSG_SPEED "SPEED (1-10): "
+#define MSG_SPEED "SPEED (1-9): "
 #define MSG_PLAYERS "PLAYERS (1-2): "
 #define MSG_LEVEL "LEVEL (1-4): "
+
+#define MSG_P1 "El jugador uno se mueve con las flechas\n"
+#define MSG_P2 "El jugador dos se mueve con las WSAD\n"
+#define MSG_SINGLE "Muevete usando las flechas\n"
 
 
 typedef struct{
@@ -34,7 +38,7 @@ void start_eliminator(){
         }
     }
     if(input == SPACEBAR){
-        play();
+        starting_screen();
     }else{
         settings();
     }
@@ -45,7 +49,7 @@ void settings(){
     char input;
     printf(MSG_SPEED);
     while((input = readchar()) != ENTER){
-        if(input >= '1' && input <= '10'){
+        if(input >= '1' && input <= '9'){
             putchar(input);
             SPEED = ctoi(input);
             putchar(ENTER);
@@ -83,6 +87,25 @@ void settings(){
     start_eliminator();
 }
 
+void starting_screen(){
+    clearscreen();
+    if(CANT_PLAYERS == 1){
+        printf(MSG_SINGLE);
+    } else{
+        printf(MSG_P1);
+        printf(MSG_P2);
+    }
+    printf("Presione SPACE para jugar o ENTER para volver al menu\n");
+    char c;
+    while((c= readchar())!=ESC){
+        if (c == SPACEBAR){
+            play();
+        }if( c == ENTER){
+            start_eliminator();
+        }   
+    }
+}
+
 void play(){
-    //completar
+
 }

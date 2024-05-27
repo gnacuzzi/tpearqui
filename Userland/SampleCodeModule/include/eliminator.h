@@ -3,8 +3,10 @@
 
 void start_eliminator();
 
-void play();
+void starting_screen();
 
 void settings();
+
+void play();
 
 #endif
