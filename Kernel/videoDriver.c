@@ -106,14 +106,14 @@ void print_new_line(void){
 	cursor_x = 0; // pen x is set to full left.
 
     // If there is space for another line, we simply advance the pen y. Otherwise, we move up the entire screen and clear the lower part.
-    if (cursor_y + (2 * CHAR_HEIGHT) <= VBE_mode_info->height) {
-        cursor_y += CHAR_HEIGHT;
+    if (cursor_y + (2 * CHAR_HEIGHT * DEFAULT_LETTER_SIZE) <= VBE_mode_info->height) {
+        cursor_y += CHAR_HEIGHT * DEFAULT_LETTER_SIZE;
     } else {
         void* dst = (void*)((uint64_t)VBE_mode_info->framebuffer);
-        void* src = (void*)(dst + 3 * (CHAR_HEIGHT * (uint64_t)VBE_mode_info->width));
-        uint64_t len = 3 * ((uint64_t)VBE_mode_info->width * (VBE_mode_info->height - CHAR_HEIGHT));
+        void* src = (void*)(dst + 3 * (CHAR_HEIGHT * DEFAULT_LETTER_SIZE * (uint64_t)VBE_mode_info->width));
+        uint64_t len = 3 * ((uint64_t)VBE_mode_info->width * (VBE_mode_info->height - CHAR_HEIGHT * DEFAULT_LETTER_SIZE));
         memcpy(dst, src, len);
-        memset(dst + len, 0, 3 * (uint64_t)VBE_mode_info->width * CHAR_HEIGHT);
+        memset(dst + len, 0, 3 * (uint64_t)VBE_mode_info->width * CHAR_HEIGHT * DEFAULT_LETTER_SIZE);
     }
 }
 
@@ -125,35 +125,35 @@ void draw_char(char c) {
         return;
     }
 	if (c == '\b') { // Borrar el caracter anterior 
-        if (cursor_x < CHAR_WIDTH && cursor_y > 0) { 
-            cursor_y -= CHAR_HEIGHT;
-            cursor_x = (VBE_mode_info->width / CHAR_WIDTH) * CHAR_WIDTH - CHAR_WIDTH;
+        if (cursor_x < DEFAULT_LETTER_SIZE * CHAR_WIDTH && cursor_y > 0) { 
+            cursor_y -= CHAR_HEIGHT * DEFAULT_LETTER_SIZE;
+            cursor_x = (VBE_mode_info->width / DEFAULT_LETTER_SIZE * CHAR_WIDTH) * DEFAULT_LETTER_SIZE * CHAR_WIDTH - DEFAULT_LETTER_SIZE * CHAR_WIDTH;
         } else {
-            cursor_x -= CHAR_WIDTH;
+            cursor_x -= DEFAULT_LETTER_SIZE * CHAR_WIDTH;
         }
-        draw_rect(cursor_x, cursor_y, CHAR_WIDTH, CHAR_HEIGHT, backColor);
+        draw_rect(cursor_x, cursor_y, DEFAULT_LETTER_SIZE * CHAR_WIDTH, CHAR_HEIGHT * DEFAULT_LETTER_SIZE, backColor);
         //_bufferIdx--;
         return;
     }
     if (c >= FIRST_CHAR && c <= LAST_CHAR) {
-        const char* data = font + 32 * (c - 33);
-        for (int h = 0; h < 16; h++) {
-            Color* pos = (Color*)getPtrToPixel(cursor_x, cursor_y + h);
-            if (*data & 0b00000001) pos[0] = penColor;
-            if (*data & 0b00000010) pos[1] = penColor;
-            if (*data & 0b00000100) pos[2] = penColor;
-            if (*data & 0b00001000) pos[3] = penColor;
-            if (*data & 0b00010000) pos[4] = penColor;
-            if (*data & 0b00100000) pos[5] = penColor;
-            if (*data & 0b01000000) pos[6] = penColor;
-            if (*data & 0b10000000) pos[7] = penColor;
+        const char* data = font + 32 * (c - FIRST_CHAR);
+        for (int h = 0; h < 16; h++) { // Leer filas al revés
+            for (int w = 0; w < 8; w++) {
+                if (*data & (1 << w)) {
+                    draw_rect(cursor_x + w * DEFAULT_LETTER_SIZE, cursor_y + h * DEFAULT_LETTER_SIZE, DEFAULT_LETTER_SIZE, DEFAULT_LETTER_SIZE, penColor);
+                }
+            }
             data++;
-            if (*data & 0b00000001) pos[8] = penColor;
+            for (int w = 0; w < 8; w++) {
+                if (*data & (1 << w)) {
+                    draw_rect(cursor_x + (w + 8) * DEFAULT_LETTER_SIZE, cursor_y + h * DEFAULT_LETTER_SIZE, DEFAULT_LETTER_SIZE, DEFAULT_LETTER_SIZE, penColor);
+                }
+            }
             data++;
         }
     }
 
-    cursor_x += CHAR_WIDTH;
+    cursor_x += DEFAULT_LETTER_SIZE * CHAR_WIDTH;
     if (cursor_x > VBE_mode_info->width - CHAR_WIDTH) {
         print_new_line();
     }
@@ -168,13 +168,5 @@ void draw_string(const char* str) {
 }
 
 void set_lettersize(int size){
-    CHAR_HEIGHT -= DEFAULT_LETTER_SIZE;
-    CHAR_WIDTH -= DEFAULT_LETTER_SIZE;
     DEFAULT_LETTER_SIZE = size;
-    CHAR_HEIGHT += DEFAULT_LETTER_SIZE;
-    CHAR_WIDTH += DEFAULT_LETTER_SIZE;
 }
-
-
-//falta lo de los colores de las fuentes
-//falta lo del tamaño de las fuentes
