@@ -1,5 +1,6 @@
 #include <stdint.h>
 #include "include/libc.h"
+#include "include/eliminator.h"
 
 static int CANT_PLAYERS=1;
 static int SPEED=1;
@@ -42,5 +43,8 @@ void settings(){
     char input;
     printf(SPEED);
     input = readchar();
-    if(input<1 || )
+}
+
+void play(){
+    //completar
 }

@@ -75,18 +75,34 @@ static void help(char** parameters, int cantParams){
 	}
 
 	const char* manual=
-	"DIVIDEBYZERo               Command to verify the exception routine \"Divide by zero\"\n"
+	"DIVIDEBYZERO               Command to verify the exception routine \"Divide by zero\"\n"
 	"ELIMINATOR                 Challenge yourself or you and a friend to an elimination game\n"
 	"HELP                       Display a menu with all the available commands in StarShell\n"
 	"INVALIDOPERATION           Command to verify the exception routine \"Invalid Opcode\"\n"
 	"LETTERSIZE                 Change the letter size to your preferences\n"
 	"TIME                       Show current time\n"
-	"CLEAR                      Clears the screen\n";
+	"CLEAR                      Clears the screen\n"
+	"REGISTERS                  Prints each register with it's values at the moment of the snapshot\n";
 	printf(manual);
 }
 
-static const char* allCommands[] = {"CLEAR", "DIVIDEBYZERO", "ELIMINATOR", "HELP", "INVALIDOPERATION","LETTERSIZE", "TIME"};
-static void (*commandsFunction[])(char ** parameters, int cantParams) = {clear, dividebyzero, eliminator, help, invalidoperation, lettersize, time}; //funciones a hacer
+static char * regs[] = {"RIP", "RSP", "RAX", "RBX", "RCX", "RDX", "RBP", "RDI", "RSI", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15"};
+
+static void registers(char **parameters, int cantParams){
+	if(cantParams != 0){
+		printf("Registers doesn't need parameters\n");
+		return;
+	}
+	int len = 17;
+    uint64_t snapShot[len];
+    getRegs(snapShot);
+    for (int i = 0; i < len; i++){
+        printf("%s: 0x%x\n", regs[i], snapShot[i]);
+	}
+}
+
+static const char* allCommands[] = {"CLEAR", "DIVIDEBYZERO", "ELIMINATOR", "HELP", "INVALIDOPERATION","LETTERSIZE", "REGISTERS", "TIME"};
+static void (*commandsFunction[])(char ** parameters, int cantParams) = {clear, dividebyzero, eliminator, help, invalidoperation, lettersize, registers, time}; //funciones a hacer
 
 int scanCommand(char* command, char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], char* buffer){
 	// buffer = "command arg1 arg2"

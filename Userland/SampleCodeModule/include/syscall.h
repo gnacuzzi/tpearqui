@@ -14,5 +14,6 @@ uint8_t get_seconds();
 
 setlettersize(int size);	
 
+uint64_t * getRegs(uint64_t * regarr);
 
 #endif
