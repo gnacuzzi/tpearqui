@@ -20,4 +20,13 @@ static void* getPtrToPixel(uint16_t x, uint16_t y);
 void print_new_line(void);
 void set_lettersize(int size);
 
+//para poder imprimir en el back 
+void printf(const char * fmt, ...);
+void putchar(char c);
+void puts(const char * s);
+void printchars(char c, int n);
+int strtoi(char* s, char ** end);
+int itoa(int n, char* buffer, int base);
+int isnumber(int ch);
+
 #endif
