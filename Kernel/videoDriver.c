@@ -67,13 +67,7 @@ static void* getPtrToPixel(uint16_t x, uint16_t y) {
     return (void*)(VBE_mode_info->framebuffer + 3 * (x + (y * (uint64_t)VBE_mode_info->width)));
 }
 
-void putPixel(Color color, uint64_t x, uint64_t y) {
-	if (x >= VBE_mode_info->width || y >= VBE_mode_info->height)
-        return;
 
-    Color* pos = (Color*)getPtrToPixel(x, y);
-    *pos = color;
-}
 
 void draw_rect(int x, int y, int width, int height, Color color){
 	if (x >= VBE_mode_info->width || y >= VBE_mode_info->height)
