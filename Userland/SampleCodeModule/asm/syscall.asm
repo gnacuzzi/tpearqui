@@ -2,6 +2,8 @@ GLOBAL write
 GLOBAL read_char
 GLOBAL clear_screen
 GLOBAL get_seconds
+GLOBAL get_minutes
+GLOBAL get_hours
 GLOBAL setlettersize
 GLOBAL getRegs
 GLOBAL get_control
@@ -27,17 +29,27 @@ get_seconds:
     int 80h
     ret
 
-setlettersize:
+get_minutes:
     mov rax, 4
     int 80h
     ret
 
-getRegs:
+get_hours:
     mov rax, 5
     int 80h
     ret
 
-get_control:
+setlettersize:
     mov rax, 6
+    int 80h
+    ret
+
+getRegs:
+    mov rax, 7
+    int 80h
+    ret
+
+get_control:
+    mov rax, 8
     int 80h
     ret

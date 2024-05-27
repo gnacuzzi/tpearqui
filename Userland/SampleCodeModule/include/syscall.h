@@ -10,7 +10,10 @@ uint8_t read_char(int fd);
 
 void clear_screen();
 
-uint8_t get_seconds();
+void get_seconds(int * sec);
+void get_minutes(int * min);
+void get_hours(int * hours);
+
 
 setlettersize(int size);	
 

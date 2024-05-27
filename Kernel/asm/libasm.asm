@@ -1,7 +1,9 @@
 GLOBAL cpuVendor
 GLOBAL getKey
 
-GLOBAL get_time
+GLOBAL get_sec
+GLOBAL get_min
+GLOBAL get_hour
 GLOBAL save_registers
 EXTERN copy_registers
 
@@ -43,36 +45,40 @@ getKey:
     pop rbp
     ret
 
-get_time:
+get_sec:
 	push rbp
-    mov rbp, rsp
+	mov  rbp,rsp
+	mov al, 0
+	out 70h, al
+	in al, 71h
+	mov rsp,rbp
+	pop rbp
+	ret
 
-    mov al, 0Bh
-    out 70h, al
-    in  al, 71h
-    or al, 6h
-    out 71h, al
+get_min:
+	push rbp
+	mov  rbp,rsp
+	mov al, 2
+	out 70h, al
+	in al, 71h
+	mov rsp,rbp
+	pop rbp
+	ret
 
-    mov al, 0
-    out 70h, al
-    in al, 71h
-    mov [rdx], al
 
-    mov al, 2
-    out 70h, al
-    in al, 71h
-    mov [rsi], al
-    
-    mov al, 4
-    out 70h, al
-    in al, 71h
-    mov [rdi], al
-
-    mov rsp, rbp
-    pop rbp
-    ret
+get_hour:
+	push rbp
+	mov  rbp,rsp
+	mov rax,0
+	mov al, 4
+	out 70h, al
+	in al, 71h
+	mov rsp,rbp
+	pop rbp
+	ret
 
 save_registers:
     mov rdi, rbp 
     call copy_registers
     ret
+

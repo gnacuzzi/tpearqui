@@ -11,9 +11,9 @@ void copy_registers(uint64_t * stack);
 
 char *cpuVendor(char *result);
 char getKey();
-int get_seconds(); 
-int get_minutes();
-int get_hours();
+int get_sec(); 
+int get_min();
+int get_hour();
 void save_registers();
 
 #endif

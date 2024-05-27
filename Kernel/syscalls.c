@@ -10,15 +10,19 @@
 #define READ 0
 #define WRITE 1
 #define CLEAR 2
-#define TIME 3
-#define LETTERSIZE 4
-#define REGISTERS 5
-#define CONTROL 6
+#define SECONDS 3
+#define MINUTES 4
+#define HOURS 5
+#define LETTERSIZE 6
+#define REGISTERS 7
+#define CONTROL 8
 
 static void syscall_write(uint32_t fd, char c);
 static void syscall_read( uint64_t buffer);
 static void syscall_clear();
-static uint32_t syscall_time();
+static void syscall_seconds(uint64_t arg0);
+static void syscall_minutes(uint64_t arg0);
+static void syscall_hours(uint64_t arg0);
 static void syscall_lettersize(int size);
 static void syscall_registers(uint64_t * buffer);
 static int syscall_control();
@@ -36,8 +40,14 @@ uint64_t syscallDispatcher(uint64_t nr, uint64_t arg0, uint64_t arg1, uint64_t a
         case CLEAR:
             syscall_clear();
             break;
-        case TIME:
-            return syscall_time();
+        case SECONDS:
+            syscall_seconds(arg0);
+            break;
+        case MINUTES:
+            syscall_minutes(arg0);
+            break;
+        case HOURS:
+            syscall_hours(arg0);
             break;
         case LETTERSIZE:
             syscall_lettersize((int) arg0);
@@ -72,12 +82,26 @@ static void syscall_write(uint32_t fd, char c){
 static void syscall_clear(){
     clear_screen();
 }
-
+/*
 static uint32_t syscall_time(){
     uint8_t hours, minutes, seconds;
     get_time(&hours, &minutes, &seconds);
     return seconds + minutes * 60 + ((hours + 24 - 3) % 24) * 3600;
 }
+*/
+
+static void syscall_seconds(uint64_t sec){
+    *((int *)sec) = get_sec();
+}
+
+static void syscall_minutes(uint64_t min){
+    *((int *)min) = get_min();
+}
+
+static void syscall_hours(uint64_t hour){
+    *((int *)hour) = get_hour();
+}
+
 
 static void syscall_lettersize(int size){
     set_lettersize(size);

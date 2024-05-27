@@ -53,11 +53,14 @@ static void time(char** parameters, int cantParams){
 		printf("time doesn't need parameters\n");
 		return;
 	}
-	uint32_t seconds = get_seconds();
-    uint32_t h = seconds / 3600, m = seconds % 3600 / 60, s = seconds % 3600 % 60;
-	printf("Current time is:\n");
-    printf("%d:%d:%d\r\n", h, m, s);
-	//creo que no me funciona el printf o devuelvo mal
+	printf("CURRENT TIME GMT: \n");
+    int  seconds, minutes, hours;
+    get_seconds(&seconds);
+    get_minutes(&minutes);
+    get_hours(&hours); 
+	//hours = (hours + 0x18 - 0x3) % 0x18;
+    printf("%x:%x:%x",hours,minutes,seconds);
+    printf("\n");
 }	
 
 static void clear(char** parameters, int cantParams){

@@ -167,7 +167,7 @@ void set_lettersize(int size){
     DEFAULT_LETTER_SIZE = size;
 }
 
-//robado del main
+//lo mismo que hay en el main
 static void va_printf(const char* fmt, va_list args);
 static unsigned int log(uint64_t n, int base) {
     unsigned int count = 1;
