@@ -126,6 +126,7 @@ static void make_sound(uint64_t freq, uint64_t tick){
     if(freq > 0){
         beep(freq);
     }
+    //un hold casero
     int initial_ticks = ticks_elapsed();
     while(ticks_elapsed() - initial_ticks < tick){
         _hlt();
