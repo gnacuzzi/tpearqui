@@ -170,6 +170,7 @@ int commandId(char* command){
 int main() {
 	//clearscreen(); //lo saque porque sino no se me imprimia la excepcion
 	printf("Wellcome to StarShell! Write which module you want to use. To see ours modules write help\n");
+	make_sound(330, 3);
 	printf("~$");
 	
 	char buffer[BUFFER_LENGTH] = {0}; 
