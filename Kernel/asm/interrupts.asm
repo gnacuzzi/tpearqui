@@ -23,6 +23,10 @@ EXTERN keyboard_handler
 EXTERN syscallDispatcher
 EXTERN load_main
 
+
+GLOBAL exceptregs
+
+
 SECTION .text
 
 %macro pushState 0
@@ -199,3 +203,4 @@ haltcpu:
 
 SECTION .bss
 	aux resq 1
+	exceptregs resq 17	;registros para la excepcion

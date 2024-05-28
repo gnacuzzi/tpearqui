@@ -20,6 +20,8 @@
 #define SOUND 9
 #define RECTANGLE 10
 
+extern const uint64_t regs[17];
+
 static void syscall_write(uint32_t fd, char c);
 static void syscall_read( uint64_t buffer);
 static void syscall_clear();
@@ -112,9 +114,9 @@ static void syscall_lettersize(int size){
 }
 
 static void syscall_registers(uint64_t * buffer){
-    uint64_t * snapshot = get_snapshot();
-    for(int i = 0; i < REGS; i++)
-        buffer[i] = snapshot[i];
+    for(int i = 0; i<17; i++){
+            buffer[i] = regs[i];
+        }
     return buffer;
 }
 

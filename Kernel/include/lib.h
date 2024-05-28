@@ -14,8 +14,8 @@ char getKey();
 int get_sec(); 
 int get_min();
 int get_hour();
-void save_registers();
 void beep(uint64_t freq);
 void stop_beep();
+void get_regs_snap();
 
 #endif

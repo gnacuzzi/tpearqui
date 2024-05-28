@@ -87,7 +87,7 @@ static void help(char** parameters, int cantParams){
 	printf(manual);
 }
 
-static char * regs[] = {"RIP", "RSP", "RAX", "RBX", "RCX", "RDX", "RBP", "RDI", "RSI", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15"};
+static char * regs[] = {"RAX","RBX","RCX","RDX","RSI","RDI","RBP","R8","R9","R10","R11","R12","R13","R14","R15", "RSP","RIP"};
 
 static void registers(char **parameters, int cantParams){
 	if(cantParams != 0){
@@ -99,9 +99,8 @@ static void registers(char **parameters, int cantParams){
     getRegs(snapShot);
 	if (get_control()){
 		for (int i = 0; i < len; i++){
-        	printf("%s: 0x%x  ", regs[i], snapShot[i]);
+        	printf("%s: 0x%x\n", regs[i], snapShot[i]);
 		}
-		printf("\n");
 	}else {
 		printf("Registers are not available, you need to press control.\n");
 	}
@@ -170,7 +169,6 @@ int commandId(char* command){
 int main() {
 	//clearscreen(); //lo saque porque sino no se me imprimia la excepcion
 	printf("Wellcome to StarShell! Write which module you want to use. To see ours modules write help\n");
-	make_sound(330, 3);
 	printf("~$");
 	
 	char buffer[BUFFER_LENGTH] = {0}; 

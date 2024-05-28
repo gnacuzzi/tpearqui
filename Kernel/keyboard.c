@@ -42,7 +42,8 @@ void keyboard_handler(){ // Every time someone presses a key this function gets 
     if(tecla <=0x79){ // 0x79 because its the code for the biggest 'press'. We do this to avoid getting the releas of a key into the buffer
         if (tecla == 29) {
             control = 1;
-            save_registers();
+            //save_registers();
+            get_regs_snap();
             return;
         }
         if (cantElems == BUFFER_SIZE){
