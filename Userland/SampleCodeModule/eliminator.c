@@ -16,9 +16,9 @@ static int LEVEL= 4;
 #define MSG_PLAYERS "PLAYERS (1-2): "
 #define MSG_LEVEL "LEVEL (1-4): "
 
-#define MSG_P1 "El jugador uno se mueve con las flechas\n"
-#define MSG_P2 "El jugador dos se mueve con las WSAD\n"
-#define MSG_SINGLE "Muevete usando las flechas\n"
+#define MSG_P1 "The first player moves with the arrows\n"
+#define MSG_P2 "The second player moves with keys: WASD\n"
+#define MSG_SINGLE "Play using the arrows\n"
 
 
 typedef struct{
@@ -96,7 +96,7 @@ void starting_screen(){
         printf(MSG_P1);
         printf(MSG_P2);
     }
-    printf("Presione SPACE para jugar o ENTER para volver al menu\n");
+    printf("Click SPACE to play or ENTER to go back to the menu\n");
     char c;
     while((c= readchar())!=ESC){
         if (c == SPACEBAR){
