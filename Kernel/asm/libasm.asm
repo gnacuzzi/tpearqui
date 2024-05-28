@@ -85,7 +85,29 @@ save_registers:
     ret
 
 beep:
-	;no funciona
+	push rbp
+    push rdx
+	mov rbp, rsp
+
+	mov al, 0xB6
+	out 43h, al
+
+    mov rdx, 0
+    mov rax, 1193180
+    div rdi
+    
+	out 42h, al
+	mov al, ah
+	out 42h, al
+
+	in al, 61h
+ 	or al, 03h
+	out 61h, al
+
+	mov rsp, rbp
+    pop rdx
+	pop rbp
+	ret
 
 stop_beep:
   	in al, 61h

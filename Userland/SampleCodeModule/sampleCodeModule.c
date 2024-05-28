@@ -171,7 +171,7 @@ int main() {
 	//clearscreen(); //lo saque porque sino no se me imprimia la excepcion
 	printf("Wellcome to StarShell! Write which module you want to use. To see ours modules write help\n");
 	printf("~$");
-	make_sound(440, 3);
+	make_sound(440, 3); //no hace ruido
 
 	char buffer[BUFFER_LENGTH] = {0}; 
 	while(1){

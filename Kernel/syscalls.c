@@ -125,9 +125,8 @@ static int syscall_control(){
 }
 
 static void make_sound(uint64_t freq, uint64_t tick){
-    uint32_t div = 1193180 / freq;
     if(freq > 0){
-        beep((uint8_t)div);
+        beep(freq);
     }
     int initial_ticks = ticks_elapsed();
     while(ticks_elapsed() - initial_ticks < tick){
