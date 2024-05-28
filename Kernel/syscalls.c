@@ -2,6 +2,7 @@
 #include <videoDriver.h>
 #include <keyboard.h>
 #include <lib.h>
+#include <time.h>
 
 #define STDIN 0
 #define STDOUT 1
@@ -16,6 +17,7 @@
 #define LETTERSIZE 6
 #define REGISTERS 7
 #define CONTROL 8
+#define SOUND 9
 
 static void syscall_write(uint32_t fd, char c);
 static void syscall_read( uint64_t buffer);
@@ -26,6 +28,7 @@ static void syscall_hours(uint64_t arg0);
 static void syscall_lettersize(int size);
 static void syscall_registers(uint64_t * buffer);
 static int syscall_control();
+static void make_sound(uint64_t freq, uint64_t time);
 
 
 
@@ -57,6 +60,9 @@ uint64_t syscallDispatcher(uint64_t nr, uint64_t arg0, uint64_t arg1, uint64_t a
             break;
         case CONTROL:
             return syscall_control();
+            break;
+        case SOUND:
+            make_sound(arg0, arg1);
             break;
 	}
 	return 0;
@@ -116,4 +122,17 @@ static void syscall_registers(uint64_t * buffer){
 
 static int syscall_control(){
     return get_control();
+}
+
+static void make_sound(uint64_t freq, uint64_t tick){
+    uint32_t div = 1193180 / freq;
+    if(freq > 0){
+        beep((uint8_t)div);
+    }
+    int initial_ticks = ticks_elapsed();
+    while(ticks_elapsed() - initial_ticks < tick){
+        _hlt();
+    }
+    if(freq > 0)
+        stop_beep();
 }

@@ -6,6 +6,8 @@ GLOBAL get_min
 GLOBAL get_hour
 GLOBAL save_registers
 EXTERN copy_registers
+GLOBAL beep
+GLOBAL stop_beep
 
 section .text
 	
@@ -82,3 +84,11 @@ save_registers:
     call copy_registers
     ret
 
+beep:
+	;no funciona
+
+stop_beep:
+  	in al, 61h
+	and al, 0xFC
+	out 61h, al
+  	ret
