@@ -25,6 +25,7 @@ typedef struct{
     uint16_t x, y;
     uint16_t velocity;
     uint8_t points;
+    Color color;
     char* name;
 } Player;
 

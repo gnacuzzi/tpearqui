@@ -10,6 +10,8 @@ GLOBAL get_control
 
 GLOBAL make_sound
 
+GLOBAL draw_rectangle
+
 read_char:
     mov rax, 0
     ;mov rdi, 0
@@ -58,5 +60,10 @@ get_control:
 
 make_sound:
     mov rax, 9
+    int 80h
+    ret
+
+draw_rectangle:
+    mov rax, 10
     int 80h
     ret

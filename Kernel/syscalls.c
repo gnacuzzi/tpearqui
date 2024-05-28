@@ -18,6 +18,7 @@
 #define REGISTERS 7
 #define CONTROL 8
 #define SOUND 9
+#define RECTANGLE 10
 
 static void syscall_write(uint32_t fd, char c);
 static void syscall_read( uint64_t buffer);
@@ -29,6 +30,7 @@ static void syscall_lettersize(int size);
 static void syscall_registers(uint64_t * buffer);
 static int syscall_control();
 static void make_sound(uint64_t freq, uint64_t time);
+static void draw_rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color);
 
 
 
@@ -64,6 +66,9 @@ uint64_t syscallDispatcher(uint64_t nr, uint64_t arg0, uint64_t arg1, uint64_t a
         case SOUND:
             make_sound(arg0, arg1);
             break;
+        case RECTANGLE:
+            draw_rectangle((uint16_t)arg0, (uint16_t)arg1, (uint16_t)arg2, (uint16_t)arg3, (uint32_t)arg4);
+            break;
 	}
 	return 0;
 }
@@ -88,13 +93,6 @@ static void syscall_write(uint32_t fd, char c){
 static void syscall_clear(){
     clear_screen();
 }
-/*
-static uint32_t syscall_time(){
-    uint8_t hours, minutes, seconds;
-    get_time(&hours, &minutes, &seconds);
-    return seconds + minutes * 60 + ((hours + 24 - 3) % 24) * 3600;
-}
-*/
 
 static void syscall_seconds(uint64_t sec){
     *((int *)sec) = get_sec();
@@ -134,4 +132,10 @@ static void make_sound(uint64_t freq, uint64_t tick){
     }
     if(freq > 0)
         stop_beep();
+}
+
+
+static void draw_rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color){
+    ColorInt mycolor = { bits: color };
+    draw_rect(x, y, width, height, mycolor.color);
 }

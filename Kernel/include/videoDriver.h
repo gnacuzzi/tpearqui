@@ -11,6 +11,11 @@ typedef struct {
 	uint8_t r;
 } Color;
 
+typedef union {
+	Color color;
+	uint32_t bits;
+} ColorInt;
+
 void putPixel(Color color, uint64_t x, uint64_t y);
 void draw_char(char c);
 void draw_string(const char* str);
