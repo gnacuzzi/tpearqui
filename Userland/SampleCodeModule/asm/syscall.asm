@@ -65,5 +65,6 @@ make_sound:
 
 draw_rectangle:
     mov rax, 10
+    mov r10, rcx
     int 80h
     ret
