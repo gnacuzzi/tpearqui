@@ -82,12 +82,32 @@ SECTION .text
 
 
 %macro exceptionHandler 1
-	pushState ; Se cargan 15 registros en stack
+	pushState 
 
-	mov rsi, rsp
-	add rsi, 15*8 ; RIP 
-	mov rdx, rsp
-	add rdx, 18*8 ; RSP 
+	; guardamos los registros en este orden: 
+	;RAX, RBX, RCX, RDX, RSI, RDI, RBP, R8, R9, R10, R11, R12, R13
+	; R14, R15, RSP,RIP
+    mov [exceptregs+8*0],	rax
+	mov [exceptregs+8*1],	rbx
+	mov [exceptregs+8*2],	rcx
+	mov [exceptregs+8*3],	rdx
+	mov [exceptregs+8*4],	rsi
+	mov [exceptregs+8*5],	rdi
+	mov [exceptregs+8*6],	rbp
+	mov [exceptregs+8*7], r8
+	mov [exceptregs+8*8], r9
+	mov [exceptregs+8*9], r10
+	mov [exceptregs+8*10], r11
+	mov [exceptregs+8*11], r12
+	mov [exceptregs+8*12], r13
+	mov [exceptregs+8*13], r14
+	mov [exceptregs+8*14], r15
+
+	mov rax, rsp
+	add rax, 160			  ;volvemos a antes de pushear los registros
+	mov [exceptregs+ 8*15], rax  ;rsp
+	mov rax, [rsp+15*8]
+	mov [exceptregs + 128], rax ;rip
 
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher

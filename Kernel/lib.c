@@ -51,13 +51,3 @@ void * memcpy(void * destination, const void * source, uint64_t length)
 
 
 
-uint64_t reg_snap[REGS] = {0};      /* Vector de valores de registros */
-static char * regs[] = {"RAX", "RBX", "RCX", "RDX", "RBP", "RDI", "RSI", "R8", "R9", "R10", "R11", "R12", "R13", "R14", "R15"};
-
-
-//hasta aca lo agregado
-void print_regs(uint64_t rip, uint64_t rsp, uint64_t * newRsp) {
-	printf("RIP: 0x%x\nRSP: 0x%x\n", rip, rsp);
-    for (int i = 0; i < sizeof(regs)/sizeof(char *); i++)
-        printf("%s: 0x%x ", regs[i], *(newRsp - i));
-}
