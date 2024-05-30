@@ -35,7 +35,7 @@ void settings(){
     char input;
     printf(MSG_SPEED);
     while((input = readchar()) != ENTER){
-        if(input >= '1' && input <= '9'){
+        if(input >= '1' && input <= '3'){
             putchar(input);
             SPEED = ctoi(input);
         }
@@ -120,7 +120,7 @@ void play1(){
 set_enviroment();
     char c;
     while(1){
-        wait_delta(1);
+        wait_delta(1/(SPEED*0.3));
         c = readchar();
         switch (c){
             case 2: // left
@@ -189,7 +189,7 @@ void play2(){
     set_enviroment();
     char c;
     while(1){
-        wait_delta(1);
+        wait_delta(1/(SPEED*0.3));
         c = readchar();
         switch (c){
             case 'W':
