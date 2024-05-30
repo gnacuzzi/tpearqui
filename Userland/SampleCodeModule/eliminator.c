@@ -65,13 +65,13 @@ void settings(){
         char * name={0};
         printf("1st player's name: ");
         scanf(name);
-        player1 = (Player){SCREEN_WIDTH * STARTING_OFFSET_1, SCREEN_HEIGHT/2, 0, 1, 0, PINK, name};
+        player1 = (Player){SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_1, 0, 1, 0, PINK, name};
         printf("2nd player's name: ");
         scanf(name);
-        player2 = (Player) {SCREEN_WIDTH * STARTING_OFFSET_2, SCREEN_HEIGHT/2, 0, -1, 0, LIGHT_GREEN, name};
+        player2 = (Player) {SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_2, 0, -1, 0, LIGHT_GREEN, name};
     }else{
-        player1 = (Player) {SCREEN_WIDTH * STARTING_OFFSET_1, SCREEN_HEIGHT/2, 0, 1, 0, PINK, "You"};
-        player2 = (Player) {SCREEN_WIDTH * STARTING_OFFSET_2, SCREEN_HEIGHT/2, 0, -1, 0, LIGHT_GREEN, "Elimnator"};
+        player1 = (Player) {SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_1, 0, 1, 0, PINK, "You"};
+        player2 = (Player) {SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_2, 0, -1, 0, LIGHT_GREEN, "Elimnator"};
     }
     start_eliminator();
 }
@@ -184,19 +184,22 @@ void play2(){
             break;  
         }
         //fijarse tema esc
-
+        
         if(checkWin(player1.x, player1.y, player1.name, player2.x, player2.y, player2.name)==1){
             return;
         }
+        
 
         board[player1.x/SQUARE_SIZE][player1.y/SQUARE_SIZE] = 1;
         board[player2.x/SQUARE_SIZE][player2.y/SQUARE_SIZE] = 1;
 
+        /*
         player1.x += SQUARE_SIZE*player1.inc_x;
         player2.x += SQUARE_SIZE*player2.inc_x;
         player1.y += SQUARE_SIZE*player1.inc_y;
         player2.y += SQUARE_SIZE*player2.inc_y;
-        
+        */
+    
         draw_rectangle(player1.x, player1.y,SQUARE_SIZE, SQUARE_SIZE, PINK);
         draw_rectangle(player2.x, player2.y, SQUARE_SIZE, SQUARE_SIZE, LIGHT_GREEN);
     }
