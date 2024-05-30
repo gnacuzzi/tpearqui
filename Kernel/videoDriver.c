@@ -7,9 +7,7 @@
 #include <stdarg.h>
 #define MAX_CHARS 256
 
-/* The width of a character in pixels. */
 static int CHAR_WIDTH = 9;
-/* The height of a character in pixels. */
 static int CHAR_HEIGHT = 16;
 
 static int DEFAULT_LETTER_SIZE = 1;
@@ -99,9 +97,8 @@ void clear_screen(){
 }
 
 void print_new_line(void){
-	cursor_x = 0; // pen x is set to full left.
+	cursor_x = 0; 
 
-    // If there is space for another line, we simply advance the pen y. Otherwise, we move up the entire screen and clear the lower part.
     if (cursor_y + (2 * CHAR_HEIGHT * DEFAULT_LETTER_SIZE) <= VBE_mode_info->height) {
         cursor_y += CHAR_HEIGHT * DEFAULT_LETTER_SIZE;
     } else {
@@ -113,8 +110,6 @@ void print_new_line(void){
     }
 }
 
-//chequear y hay que agregar que se pueda agrandar la letr
-//poner algo tipo default color pero por ahora dejo el WHITE
 void draw_char(char c) {
     if (c == '\n') {
         print_new_line();
@@ -128,7 +123,6 @@ void draw_char(char c) {
             cursor_x -= DEFAULT_LETTER_SIZE * CHAR_WIDTH;
         }
         draw_rect(cursor_x, cursor_y, DEFAULT_LETTER_SIZE * CHAR_WIDTH, CHAR_HEIGHT * DEFAULT_LETTER_SIZE, backColor);
-        //_bufferIdx--;
         return;
     }
     if (c >= FIRST_CHAR && c <= LAST_CHAR) {

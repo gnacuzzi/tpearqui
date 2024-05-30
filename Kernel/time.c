@@ -15,7 +15,7 @@ int seconds_elapsed() {
 	return ticks / 18;
 }
 
-void wait_time(int delta){ // This function gives us the possibility to wait delta ticks.
+void wait_time(int delta){ 
 	int currentTicks = ticks;
 	while(ticks - currentTicks < delta){
 		_hlt();
