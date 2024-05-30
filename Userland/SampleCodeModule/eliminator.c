@@ -2,6 +2,7 @@
 #include "include/libc.h"
 #include "include/eliminator.h"
 #include "include/syscall.h"
+#include "include/rand.h"
 
 static int CANT_PLAYERS= 1;
 static int SPEED= 1;
@@ -116,7 +117,72 @@ int want_continue(){
 }
 
 void play1(){
-    set_enviroment();
+set_enviroment();
+    char c;
+    while(1){
+        wait_delta(1);
+        c = readchar();
+        switch (c){
+            case 2: // left
+                if (player1.inc_x == 0){
+                    player1.inc_x = -1;
+                    player1.inc_y = 0;
+                }
+                break;
+            case 3: // right
+                if (player1.inc_x == 0){
+                    player1.inc_x = 1;
+                    player1.inc_y = 0;
+                }
+                break;
+            case 4: // up
+                if (player1.inc_y == 0){
+                    player1.inc_x = 0;
+                    player1.inc_y = -1;
+                }
+                break;        
+            case 5: // down
+                if (player1.inc_y == 0){
+                    player1.inc_x = 0;
+                    player1.inc_y = 1;
+                }
+                break;  
+        }
+        srand(get_ticks());
+        char key = rand_char();
+        switch (key)
+        {
+            case 'W':
+            if (player2.inc_y == 0){
+                player2.inc_y = -1;
+                player2.inc_x = 0;
+            }
+            break;
+        case 'A':
+            if (player2.inc_x == 0){
+                player2.inc_y = 0;
+                player2.inc_x = -1;
+            }
+            break;
+        case 'S':
+            if (player2.inc_y == 0){
+                player2.inc_y = 1;
+                player2.inc_x = 0;
+            }
+            break;        
+        case 'D':
+            if (player2.inc_x == 0){
+                player2.inc_y = 0;
+                player2.inc_x = 1;
+            }
+            break;
+        }
+        //fijarse tema esc
+        if(analyseSituation()){
+            return;
+        }
+    }
+    clear_screen();
 }
 
 void play2(){
@@ -176,9 +242,16 @@ void play2(){
                 break;  
         }
         //fijarse tema esc
-        
-        if(checkWin(player1.x, player1.y, player1.name, player2.x, player2.y, player2.name)==1){
+        if(analyseSituation()){
             return;
+        }
+    }
+    clear_screen();
+}
+
+int analyseSituation(){        
+        if(checkWin(player1.x, player1.y, player1.name, player2.x, player2.y, player2.name)==1){
+            return 1;
         }
         
 
@@ -194,22 +267,25 @@ void play2(){
     
         draw_rectangle(player1.x, player1.y,SQUARE_SIZE, SQUARE_SIZE, PINK);
         draw_rectangle(player2.x, player2.y, SQUARE_SIZE, SQUARE_SIZE, LIGHT_GREEN);
-    }
-    clear_screen();
+        
+        return 0;
 }
 
 int checkWin(uint16_t x1, uint16_t y1, char*  name1, uint16_t x2, uint16_t y2, char*  name2){
     if (board[x1][y1] == 1 || OUT_OF_BOUNDS(x1,y1)){
+        make_sound(330, 3);
         clear_screen();
         printf("%s WINS\n", name2);
         player2.points++;
         return 1;
     }else if(board[x2][y2] == 1 || OUT_OF_BOUNDS(x2,y2)){
+        make_sound(330, 3);
         clear_screen();
         printf("%s WINS\n", name1);
         player1.points++;
         return 1;
     }else if (x2==x1 && y2==y1){
+        make_sound(330, 3);
         clear_screen();
         printf("It's a tie\n");
         return 1;

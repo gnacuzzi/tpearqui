@@ -15,12 +15,5 @@ void srand(unsigned long s) {
 
 char rand_char() {
     seed = (A * seed + C) % M;
-    // Mapeamos el resultado a 'w', 'a', 's' o 'd'
-    switch (seed % 4) {
-        case 0: return 'W';
-        case 1: return 'A';
-        case 2: return 'S';
-        case 3: return 'D';
-        default: return 'W'; // Caso por defecto, aunque no debería llegar aquí
-    }
+    return 'A' + (seed % 26);
 }

@@ -44,6 +44,9 @@ int checkWin(uint16_t x1, uint16_t y1, char*  name1, uint16_t x2, uint16_t y2, c
 
 int want_continue();
 
+int analyseSituation();    
+
+
 
 typedef struct{
     uint16_t x, y;
