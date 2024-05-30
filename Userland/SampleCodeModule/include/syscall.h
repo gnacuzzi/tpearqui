@@ -26,4 +26,6 @@ void make_sound(uint64_t freq, uint64_t time);
 void draw_rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, Color color);
 
 uint64_t get_ticks();
+
+void wait_delta(uint64_t time);
 #endif

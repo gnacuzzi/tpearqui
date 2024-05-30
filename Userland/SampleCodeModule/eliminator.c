@@ -90,6 +90,7 @@ void starting_screen(){
     while((c= readchar())!=ESC){
         if (c == SPACEBAR){
             play();
+            start_eliminator();
         }if( c == ENTER){
             start_eliminator();
         }   
@@ -97,18 +98,15 @@ void starting_screen(){
 }
 
 void play(){
-    while (1)
-    {
-        if(CANT_PLAYERS==1){
-            play1();
-        }else{
-            play2();
-        }
-        if(!want_continue()){
-            break;
-        }
+    if(CANT_PLAYERS==1){
+        play1();
+    }else{
+        play2();
     }
-    start_eliminator();
+    if(want_continue()){
+        play();
+    }
+    return;
 }
 
 int want_continue(){
@@ -133,6 +131,7 @@ void play2(){
     set_enviroment();
     char c;
     while(1){
+        wait_delta(1);
         c = readchar();
         switch (c){
         case 'W':
@@ -191,14 +190,14 @@ void play2(){
         }
         
 
-        board[player1.x/SQUARE_SIZE][player1.y/SQUARE_SIZE] = 1;
-        board[player2.x/SQUARE_SIZE][player2.y/SQUARE_SIZE] = 1;
+        board[player1.x][player1.y] = 1;
+        board[player2.x][player2.y] = 1;
 
         
-        /*player1.x += SQUARE_SIZE*player1.inc_x;
+        player1.x += SQUARE_SIZE*player1.inc_x;
         player2.x += SQUARE_SIZE*player2.inc_x;
         player1.y += SQUARE_SIZE*player1.inc_y;
-        player2.y += SQUARE_SIZE*player2.inc_y;*/
+        player2.y += SQUARE_SIZE*player2.inc_y;
         
     
         draw_rectangle(player1.x, player1.y,SQUARE_SIZE, SQUARE_SIZE, PINK);
