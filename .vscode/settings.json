@@ -2,7 +2,10 @@
     "files.associations": {
         "compare": "cpp",
         "stdio.h": "c",
-        "libc.h": "c"
+        "libc.h": "c",
+        "eliminator.h": "c",
+        "stdint.h": "c",
+        "typeinfo": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

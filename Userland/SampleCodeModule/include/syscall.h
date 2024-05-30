@@ -2,7 +2,7 @@
 #define SYSCALLS_H
 
 #include <stdint.h>
-
+#include "color.h"
 
 void write(int fd, char c);
 
@@ -22,5 +22,7 @@ uint64_t * getRegs(uint64_t * regarr);
 int get_control();
 
 void make_sound(uint64_t freq, uint64_t time);
+
+void draw_rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, Color color);
 
 #endif

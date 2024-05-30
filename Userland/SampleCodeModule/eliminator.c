@@ -1,33 +1,18 @@
 #include <stdint.h>
 #include "include/libc.h"
 #include "include/eliminator.h"
+#include "include/syscall.h"
 
 static int CANT_PLAYERS= 1;
 static int SPEED= 1;
 static int LEVEL= 4;
 
-#define ESC '\x1B'
-#define ENTER '\n'
-#define SPACEBAR ' '
+static char board[SCREEN_WIDTH/SQUARE_SIZE][SCREEN_HEIGHT/SQUARE_SIZE]; //ver tema tamaño
 
+#define OUT_OF_BOUNDS(x, y) ((x) > SCREEN_WIDTH || (x) < 0 || (y) > SCREEN_HEIGHT || (y) < 0) 
 
-#define MSG_START "ELIMINATOR (ARQUI'S VERSION)\n PLAYERS:%d \n SPEED: %d \n LEVEL: %d \n\n [SPACE] to begin game \n [ENTER] to change \n [ESCAPE] to exit \n"
-#define MSG_SPEED "SPEED (1-9): "
-#define MSG_PLAYERS "PLAYERS (1-2): "
-#define MSG_LEVEL "LEVEL (1-4): "
+Player player1, player2;
 
-#define MSG_P1 "The first player moves with the arrows\n"
-#define MSG_P2 "The second player moves with keys: WASD\n"
-#define MSG_SINGLE "Play using the arrows\n"
-
-
-typedef struct{
-    uint16_t x, y;
-    uint16_t velocity;
-    uint8_t points;
-    Color color;
-    char* name;
-} Player;
 
 void start_eliminator(){
     clearscreen();
@@ -53,37 +38,40 @@ void settings(){
         if(input >= '1' && input <= '9'){
             putchar(input);
             SPEED = ctoi(input);
-            putchar(ENTER);
         }
     }
+    putchar(ENTER);
+
     
     printf(MSG_LEVEL);
     while((input = readchar()) != ENTER){
         if(input>='1' && input<='4'){
             putchar(input);
             LEVEL = ctoi(input);
-            putchar(ENTER);
         }
     }
+    putchar(ENTER);
 
     printf(MSG_PLAYERS);
     while((input = readchar()) != ENTER){
         if(input=='1' || input=='2'){
             putchar(input);
             CANT_PLAYERS = ctoi(input);
-            putchar(ENTER);    
         }
     }
+    putchar(ENTER);    
+
     if(CANT_PLAYERS == 2){
         char * name={0};
         printf("1st player's name: ");
         scanf(name);
-        Player player1 = {0, 0, SPEED, 0, name};
+        player1 = (Player){SCREEN_WIDTH * STARTING_OFFSET_1, SCREEN_HEIGHT/2, 0, 1, 0, PINK, name};
         printf("2nd player's name: ");
         scanf(name);
-        Player player2 = {0, 0, SPEED, 0, name};
+        player2 = (Player) {SCREEN_WIDTH * STARTING_OFFSET_2, SCREEN_HEIGHT/2, 0, -1, 0, LIGHT_GREEN, name};
     }else{
-        Player player = {0, 0, SPEED, 0, "single_player"};
+        player1 = (Player) {SCREEN_WIDTH * STARTING_OFFSET_1, SCREEN_HEIGHT/2, 0, 1, 0, PINK, "You"};
+        player2 = (Player) {SCREEN_WIDTH * STARTING_OFFSET_2, SCREEN_HEIGHT/2, 0, -1, 0, LIGHT_GREEN, "Elimnator"};
     }
     start_eliminator();
 }
@@ -108,5 +96,141 @@ void starting_screen(){
 }
 
 void play(){
+    while (1)
+    {
+        if(CANT_PLAYERS==1){
+            play1();
+        }else{
+            play2();
+        }
+        if(!want_continue()){
+            break;
+        }
+    }
+    start_eliminator();
+}
 
+int want_continue(){
+    clear_screen();
+    printf(POINTS, player1.name, player1.points, player2.name, player2.points);
+    printf("Press [SPACE] to cotinue or [ENTER] to change options or to return");
+    int c;
+    while (c=readchar() != ENTER)
+    {
+        if(c==SPACEBAR){
+            return 1;
+        }
+    }
+    return 0;    
+}
+
+void play1(){
+    set_enviroment();
+}
+
+void play2(){
+    set_enviroment();
+    char c;
+    while(1){
+        c = readchar();
+        switch (c){
+        case 'W':
+            if (player2.inc_y != 1){
+                player2.inc_y = -1;
+                player2.inc_x = 0;
+            }
+            break;
+        case 'A':
+            if (player2.inc_x != 1){
+                player2.inc_y = 0;
+                player2.inc_x = -1;
+            }
+            break;
+        case 'S':
+            if (player2.inc_y != -1){
+                player2.inc_y = 1;
+                player2.inc_x = 0;
+            }
+            break;        
+        case 'D':
+            if (player2.inc_x != -1){
+                player2.inc_y = 0;
+                player2.inc_x = 1;
+            }
+            break;
+        case 2: // left
+            if (player1.inc_x != 1){
+                player1.inc_x = -1;
+                player1.inc_y = 0;
+            }
+            break;
+        case 3: // right
+            if (player1.inc_x != -1){
+                player1.inc_x = 1;
+                player1.inc_y = 0;
+            }
+            break;
+        case 4: // up
+            if (player1.inc_y != 1){
+                player1.inc_x = 0;
+                player1.inc_y = -1;
+            }
+            break;        
+        case 5: // down
+            if (player1.inc_y != -1){
+                player1.inc_x = 0;
+                player1.inc_y = 1;
+            }
+            break;  
+        }
+        //fijarse tema esc
+
+        if(checkWin(player1.x, player1.y, player1.name, player2.x, player2.y, player2.name)==1){
+            return;
+        }
+
+        board[player1.x/SQUARE_SIZE][player1.y/SQUARE_SIZE] = 1;
+        board[player2.x/SQUARE_SIZE][player2.y/SQUARE_SIZE] = 1;
+
+        player1.x += SQUARE_SIZE*player1.inc_x;
+        player2.x += SQUARE_SIZE*player2.inc_x;
+        player1.y += SQUARE_SIZE*player1.inc_y;
+        player2.y += SQUARE_SIZE*player2.inc_y;
+        
+        draw_rectangle(player1.x, player1.y,SQUARE_SIZE, SQUARE_SIZE, PINK);
+        draw_rectangle(player2.x, player2.y, SQUARE_SIZE, SQUARE_SIZE, LIGHT_GREEN);
+    }
+    clear_screen();
+}
+
+int checkWin(uint16_t x1, uint16_t y1, char*  name1, uint16_t x2, uint16_t y2, char*  name2){
+    if (board[x1/SQUARE_SIZE][y1/SQUARE_SIZE] == 1 || OUT_OF_BOUNDS(x1,y1)){
+        clear_screen();
+        printf("%s WINS", name1);
+        return 1;
+    }else if(board[x2/SQUARE_SIZE][y2/SQUARE_SIZE] == 1 || OUT_OF_BOUNDS(x2,y2)){
+        clear_screen();
+        printf("%s WINS", name2);
+        return 1;
+    }else if (x2==x1 && y2==y1){
+        clear_screen();
+        printf("It's a tie");
+        return 1;
+    }
+    return 0;
+}
+
+void set_enviroment(){
+    clearscreen();
+    for(int i; i < (SCREEN_WIDTH/SQUARE_SIZE); i++){
+        for(int j; j<(SCREEN_HEIGHT/SQUARE_SIZE); j++){
+            board[i][j] = 0;
+        }
+    }
+    draw_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT * 0.03, RED);
+    if(CANT_PLAYERS==2){
+        printf(POINTS, player1.name, player1.points, player2.name, player2.points);
+    }else{
+        //printf(POINTS, player1.points);
+    }    
 }

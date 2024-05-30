@@ -25,6 +25,7 @@ static void eliminator(char** parameters, int cantParams){
 		return;
 	}
 	start_eliminator();
+	clearscreen();
 }
 
 static void invalidoperation(char** parameters, int cantParams){
