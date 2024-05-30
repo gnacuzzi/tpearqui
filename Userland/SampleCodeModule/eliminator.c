@@ -62,13 +62,14 @@ void settings(){
     putchar(ENTER);    
 
     if(CANT_PLAYERS == 2){
-        char * name={0};
+        char * name1={0};
         printf("1st player's name: ");
-        scanf(name);
-        player1 = (Player){SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_1, 0, 1, 0, PINK, name};
+        scanf(name1);
+        player1 = (Player){SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_1, 0, 1, 0, PINK, name1};
+        char * name2={0};
         printf("2nd player's name: ");
-        scanf(name);
-        player2 = (Player) {SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_2, 0, -1, 0, LIGHT_GREEN, name};
+        scanf(name2);
+        player2 = (Player){SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_2, 0, -1, 0, LIGHT_GREEN, name2};
     }else{
         player1 = (Player) {SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_1, 0, 1, 0, PINK, "You"};
         player2 = (Player) {SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_2, 0, -1, 0, LIGHT_GREEN, "Elimnator"};
@@ -193,12 +194,12 @@ void play2(){
         board[player1.x/SQUARE_SIZE][player1.y/SQUARE_SIZE] = 1;
         board[player2.x/SQUARE_SIZE][player2.y/SQUARE_SIZE] = 1;
 
-        /*
-        player1.x += SQUARE_SIZE*player1.inc_x;
+        
+        /*player1.x += SQUARE_SIZE*player1.inc_x;
         player2.x += SQUARE_SIZE*player2.inc_x;
         player1.y += SQUARE_SIZE*player1.inc_y;
-        player2.y += SQUARE_SIZE*player2.inc_y;
-        */
+        player2.y += SQUARE_SIZE*player2.inc_y;*/
+        
     
         draw_rectangle(player1.x, player1.y,SQUARE_SIZE, SQUARE_SIZE, PINK);
         draw_rectangle(player2.x, player2.y, SQUARE_SIZE, SQUARE_SIZE, LIGHT_GREEN);
@@ -207,11 +208,11 @@ void play2(){
 }
 
 int checkWin(uint16_t x1, uint16_t y1, char*  name1, uint16_t x2, uint16_t y2, char*  name2){
-    if (board[x1/SQUARE_SIZE][y1/SQUARE_SIZE] == 1 || OUT_OF_BOUNDS(x1,y1)){
+    if (board[x1][y1] == 1 || OUT_OF_BOUNDS(x1,y1)){
         clear_screen();
         printf("%s WINS", name1);
         return 1;
-    }else if(board[x2/SQUARE_SIZE][y2/SQUARE_SIZE] == 1 || OUT_OF_BOUNDS(x2,y2)){
+    }else if(board[x2][y2] == 1 || OUT_OF_BOUNDS(x2,y2)){
         clear_screen();
         printf("%s WINS", name2);
         return 1;
