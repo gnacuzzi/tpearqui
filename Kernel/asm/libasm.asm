@@ -1,5 +1,5 @@
 GLOBAL cpuVendor
-GLOBAL getKey
+GLOBAL get_key
 
 GLOBAL get_sec
 GLOBAL get_min
@@ -39,7 +39,7 @@ cpuVendor:
 	ret
 
 
-getKey:
+get_key:
 	push rbp
     mov rbp, rsp
 

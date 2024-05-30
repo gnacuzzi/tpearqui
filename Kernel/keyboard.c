@@ -7,7 +7,7 @@
 int get_control();
 int control = 0;
 
-static const char keyBoardTable[256] = 
+static const char keyboard_matrix[256] = 
     {       
           0,    27,  '1',  '2',  '3',  '4',  '5',  '6',   '7',  '8',  
           '9',   '0',   '-',  '=',8,' ','Q',  'W',  'E',  'R', 
@@ -25,33 +25,33 @@ static const char keyBoardTable[256] =
     };
 static char buff[BUFFER_SIZE] = {0}; //Defining a circular vector that we use as keyboard buffer
 
-static int front = 0; //First iterator. Points to the front of the buffer
-static int rear = 0; // Second iterator. Points to the last element added
-static int cantElems = 0; 
+static int first = 0; //First iterator. Points to the front of the buffer
+static int last = 0; // Second iterator. Points to the last element added
+static int cant_elems = 0; 
 
-char nextElement(){ // returns the first element pushed into the buffer in cronological order
-    if(cantElems <= 0 ) {return -1;} 
-    char toRet = buff[front];
-    front++;
-    cantElems--;
-    return toRet;
+char next(){ // returns the first element pushed into the buffer in cronological order
+    if(cant_elems <= 0 ) {return -1;} 
+    char out = buff[first];
+    first++;
+    cant_elems--;
+    return out;
 }
  
 void keyboard_handler(){ // Every time someone presses a key this function gets called and inserts into the circular buffer
-    uint8_t tecla = getKey();
-    if(tecla <=0x79){ // 0x79 because its the code for the biggest 'press'. We do this to avoid getting the releas of a key into the buffer
-        if (tecla == 29) {
+    uint8_t key = get_key();
+    if(key <=0x79){ // 0x79 because its the code for the biggest 'press'. We do this to avoid getting the releas of a key into the buffer
+        if (key == 29) {
             control = 1;
             get_regs_snap();
             return;
         }
-        if (cantElems == BUFFER_SIZE){
+        if (cant_elems == BUFFER_SIZE){
             return;
         }
-        if(rear == BUFFER_SIZE) rear = 0; // Reposition of both the front and rear pointer
-        if(front == BUFFER_SIZE) front  = 0;
-        buff[rear++] = keyBoardTable[tecla];
-        cantElems++;
+        if(last == BUFFER_SIZE) last = 0; // Reposition of both the first and last pointer
+        if(first == BUFFER_SIZE) first  = 0;
+        buff[last++] = keyboard_matrix[key];
+        cant_elems++;
     }
 }
 
