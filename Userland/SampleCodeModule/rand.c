@@ -1,14 +1,12 @@
 #include "include/rand.h"
 
-// Definimos las constantes del LCG
 #define A 1664525
 #define C 1013904223
-#define M 4294967296 // 2^32
-unsigned long seed = 1; // Semilla inicial
+#define M 4294967296 
+unsigned long seed = 1; 
 
 void srand(unsigned long s);
 
-// Función para establecer la semilla
 void srand(unsigned long s) {
     seed = s;
 }
