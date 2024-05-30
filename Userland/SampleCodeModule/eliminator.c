@@ -51,11 +51,11 @@ void settings(){
     putchar(ENTER);    
 
     if(CANT_PLAYERS == 2){
-        char * name1={0};
+        char name1[NAME_LENG];
         printf("1st player's name: ");
         scanf(name1);
         player1 = (Player){SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_1, 0, 1, 0, PINK, name1};
-        char * name2={0};
+        char name2[NAME_LENG];
         printf("2nd player's name: ");
         scanf(name2);
         player2 = (Player){SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_2, 0, -1, 0, LIGHT_GREEN, name2};
@@ -127,49 +127,49 @@ void play2(){
         c = readchar();
         switch (c){
             case 'W':
-                if (player2.inc_y != 1 && player2.inc_y != -1){
+                if (player2.inc_y == 0){
                     player2.inc_y = -1;
                     player2.inc_x = 0;
                 }
                 break;
             case 'A':
-                if (player2.inc_x != 1 && player2.inc_x != -1){
+                if (player2.inc_x == 0){
                     player2.inc_y = 0;
                     player2.inc_x = -1;
                 }
                 break;
             case 'S':
-                if (player2.inc_y != -1 && player2.inc_y != 1){
+                if (player2.inc_y == 0){
                     player2.inc_y = 1;
                     player2.inc_x = 0;
                 }
                 break;        
             case 'D':
-                if (player2.inc_x != -1 && player2.inc_x != 1){
+                if (player2.inc_x == 0){
                     player2.inc_y = 0;
                     player2.inc_x = 1;
                 }
                 break;
             case 2: // left
-                if (player1.inc_x != 1 && player1.inc_x != -1){
+                if (player1.inc_x == 0){
                     player1.inc_x = -1;
                     player1.inc_y = 0;
                 }
                 break;
             case 3: // right
-                if (player1.inc_x != -1 && player1.inc_x != 1){
+                if (player1.inc_x == 0){
                     player1.inc_x = 1;
                     player1.inc_y = 0;
                 }
                 break;
             case 4: // up
-                if (player1.inc_y != 1 && player1.inc_y != -1){
+                if (player1.inc_y == 0){
                     player1.inc_x = 0;
                     player1.inc_y = -1;
                 }
                 break;        
             case 5: // down
-                if (player1.inc_y != -1 && player1.inc_y != 1){
+                if (player1.inc_y == 0){
                     player1.inc_x = 0;
                     player1.inc_y = 1;
                 }

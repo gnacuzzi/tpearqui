@@ -13,6 +13,8 @@
 #define STARTING_OFFSET_1 0.25
 #define STARTING_OFFSET_2 0.75
 
+#define NAME_LENG 10
+
 #define MSG_START "ELIMINATOR (ARQUI'S VERSION)\n PLAYERS:%d \n SPEED: %d \n\n [SPACE] to begin game \n [ENTER] to change \n [ESCAPE] to exit \n"
 #define MSG_SPEED "SPEED (1-9): "
 #define MSG_PLAYERS "PLAYERS (1-2): "
