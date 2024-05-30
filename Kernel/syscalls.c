@@ -19,6 +19,7 @@
 #define CONTROL 8
 #define SOUND 9
 #define RECTANGLE 10
+#define TICKS 11
 
 extern const uint64_t regs[17];
 
@@ -33,7 +34,7 @@ static void syscall_registers(uint64_t * buffer);
 static int syscall_control();
 static void make_sound(uint64_t freq, uint64_t time);
 static void draw_rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color);
-
+static uint64_t syscall_ticks();
 
 
 
@@ -70,6 +71,9 @@ uint64_t syscallDispatcher(uint64_t nr, uint64_t arg0, uint64_t arg1, uint64_t a
             break;
         case RECTANGLE:
             draw_rectangle((uint16_t)arg0, (uint16_t)arg1, (uint16_t)arg2, (uint16_t)arg3, (uint32_t)arg4);
+            break;
+        case TICKS:
+            return syscall_ticks();
             break;
 	}
 	return 0;
@@ -141,4 +145,8 @@ static void make_sound(uint64_t freq, uint64_t tick){
 static void draw_rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color){
     ColorInt mycolor = { bits: color };
     draw_rect(x, y, width, height, mycolor.color);
+}
+
+static uint64_t syscall_ticks(){
+    return ticks_elapsed();
 }

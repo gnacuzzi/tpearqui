@@ -12,6 +12,8 @@ GLOBAL make_sound
 
 GLOBAL draw_rectangle
 
+GLOBAL get_ticks
+
 read_char:
     mov rax, 0
     ;mov rdi, 0
@@ -66,5 +68,10 @@ make_sound:
 draw_rectangle:
     mov rax, 10
     mov r10, rcx
+    int 80h
+    ret
+
+get_ticks:
+    mov rax, 11
     int 80h
     ret
