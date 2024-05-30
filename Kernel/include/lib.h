@@ -14,5 +14,6 @@ int get_hour();
 void beep(uint64_t freq);
 void stop_beep();
 void get_regs_snap();
+void _htl();
 
 #endif

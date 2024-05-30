@@ -10,6 +10,7 @@ GLOBAL stop_beep
 GLOBAL get_regs_snap
 ;vectores
 GLOBAL regs
+GLOBAL _htl
 
 section .text
 	
@@ -137,6 +138,11 @@ get_regs_snap:
 	mov [regs+8*16], rax
 	ret
 
+
+_hlt:
+	sti
+	hlt
+	ret
 
 SECTION .bss
 	regs resq 17	;registros para el snap

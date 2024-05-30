@@ -14,6 +14,8 @@ GLOBAL draw_rectangle
 
 GLOBAL get_ticks
 
+GLOBAL wait_delta
+
 read_char:
     mov rax, 0
     ;mov rdi, 0
@@ -73,5 +75,10 @@ draw_rectangle:
 
 get_ticks:
     mov rax, 11
+    int 80h
+    ret
+
+wait_delta:
+    mov rax, 12
     int 80h
     ret
