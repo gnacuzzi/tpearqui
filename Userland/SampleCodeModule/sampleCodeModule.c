@@ -53,7 +53,7 @@ static void time(char** parameters, int cantParams){
 		printf("time doesn't need parameters\n");
 		return;
 	}
-	printf("CURRENT TIME GMT: \n");
+	printf("CURRENT TIME: \n");
     int  seconds, minutes, hours;
     get_seconds(&seconds);
     get_minutes(&minutes);
