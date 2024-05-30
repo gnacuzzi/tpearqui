@@ -5,9 +5,8 @@
 
 static int CANT_PLAYERS= 1;
 static int SPEED= 1;
-static int LEVEL= 4;
 
-static char board[SCREEN_WIDTH/SQUARE_SIZE][SCREEN_HEIGHT/SQUARE_SIZE]; //ver tema tamaño
+static char board[SCREEN_WIDTH][SCREEN_HEIGHT]; //ver tema tamaño
 
 #define OUT_OF_BOUNDS(x, y) ((x) > SCREEN_WIDTH || (x) < 0 || (y) > SCREEN_HEIGHT || (y) < 0) 
 
@@ -16,7 +15,7 @@ Player player1, player2;
 
 void start_eliminator(){
     clearscreen();
-    printf(MSG_START, CANT_PLAYERS, SPEED, LEVEL);
+    printf(MSG_START, CANT_PLAYERS, SPEED);
     char input;
     while((input = readchar()) != SPACEBAR && input != ENTER){
         if(input == ESC){
@@ -38,16 +37,6 @@ void settings(){
         if(input >= '1' && input <= '9'){
             putchar(input);
             SPEED = ctoi(input);
-        }
-    }
-    putchar(ENTER);
-
-    
-    printf(MSG_LEVEL);
-    while((input = readchar()) != ENTER){
-        if(input>='1' && input<='4'){
-            putchar(input);
-            LEVEL = ctoi(input);
         }
     }
     putchar(ENTER);
@@ -98,29 +87,32 @@ void starting_screen(){
 }
 
 void play(){
-    if(CANT_PLAYERS==1){
-        play1();
-    }else{
-        play2();
+    while (1)
+    {    
+        if(CANT_PLAYERS==1){
+            play1();
+        }else{
+            play2();
+        }
+        if(want_continue()==0){
+            break;
+        }
     }
-    if(want_continue()){
-        play();
-    }
-    return;
 }
 
 int want_continue(){
-    clear_screen();
     printf(POINTS, player1.name, player1.points, player2.name, player2.points);
     printf("Press [SPACE] to cotinue or [ENTER] to change options or to return");
-    int c;
-    while (c=readchar() != ENTER)
+    while (1)
     {
+        char c = readchar();
         if(c==SPACEBAR){
             return 1;
+        }else if (c==ENTER){
+            return 0;
         }
     }
-    return 0;    
+
 }
 
 void play1(){
@@ -134,54 +126,54 @@ void play2(){
         wait_delta(1);
         c = readchar();
         switch (c){
-        case 'W':
-            if (player2.inc_y != 1){
-                player2.inc_y = -1;
-                player2.inc_x = 0;
-            }
-            break;
-        case 'A':
-            if (player2.inc_x != 1){
-                player2.inc_y = 0;
-                player2.inc_x = -1;
-            }
-            break;
-        case 'S':
-            if (player2.inc_y != -1){
-                player2.inc_y = 1;
-                player2.inc_x = 0;
-            }
-            break;        
-        case 'D':
-            if (player2.inc_x != -1){
-                player2.inc_y = 0;
-                player2.inc_x = 1;
-            }
-            break;
-        case 2: // left
-            if (player1.inc_x != 1){
-                player1.inc_x = -1;
-                player1.inc_y = 0;
-            }
-            break;
-        case 3: // right
-            if (player1.inc_x != -1){
-                player1.inc_x = 1;
-                player1.inc_y = 0;
-            }
-            break;
-        case 4: // up
-            if (player1.inc_y != 1){
-                player1.inc_x = 0;
-                player1.inc_y = -1;
-            }
-            break;        
-        case 5: // down
-            if (player1.inc_y != -1){
-                player1.inc_x = 0;
-                player1.inc_y = 1;
-            }
-            break;  
+            case 'W':
+                if (player2.inc_y != 1 && player2.inc_y != -1){
+                    player2.inc_y = -1;
+                    player2.inc_x = 0;
+                }
+                break;
+            case 'A':
+                if (player2.inc_x != 1 && player2.inc_x != -1){
+                    player2.inc_y = 0;
+                    player2.inc_x = -1;
+                }
+                break;
+            case 'S':
+                if (player2.inc_y != -1 && player2.inc_y != 1){
+                    player2.inc_y = 1;
+                    player2.inc_x = 0;
+                }
+                break;        
+            case 'D':
+                if (player2.inc_x != -1 && player2.inc_x != 1){
+                    player2.inc_y = 0;
+                    player2.inc_x = 1;
+                }
+                break;
+            case 2: // left
+                if (player1.inc_x != 1 && player1.inc_x != -1){
+                    player1.inc_x = -1;
+                    player1.inc_y = 0;
+                }
+                break;
+            case 3: // right
+                if (player1.inc_x != -1 && player1.inc_x != 1){
+                    player1.inc_x = 1;
+                    player1.inc_y = 0;
+                }
+                break;
+            case 4: // up
+                if (player1.inc_y != 1 && player1.inc_y != -1){
+                    player1.inc_x = 0;
+                    player1.inc_y = -1;
+                }
+                break;        
+            case 5: // down
+                if (player1.inc_y != -1 && player1.inc_y != 1){
+                    player1.inc_x = 0;
+                    player1.inc_y = 1;
+                }
+                break;  
         }
         //fijarse tema esc
         
@@ -209,31 +201,41 @@ void play2(){
 int checkWin(uint16_t x1, uint16_t y1, char*  name1, uint16_t x2, uint16_t y2, char*  name2){
     if (board[x1][y1] == 1 || OUT_OF_BOUNDS(x1,y1)){
         clear_screen();
-        printf("%s WINS", name1);
+        printf("%s WINS\n", name2);
+        player2.points++;
         return 1;
     }else if(board[x2][y2] == 1 || OUT_OF_BOUNDS(x2,y2)){
         clear_screen();
-        printf("%s WINS", name2);
+        printf("%s WINS\n", name1);
+        player1.points++;
         return 1;
     }else if (x2==x1 && y2==y1){
         clear_screen();
-        printf("It's a tie");
+        printf("It's a tie\n");
         return 1;
     }
     return 0;
 }
 
 void set_enviroment(){
-    clearscreen();
-    for(int i; i < (SCREEN_WIDTH/SQUARE_SIZE); i++){
-        for(int j; j<(SCREEN_HEIGHT/SQUARE_SIZE); j++){
+    player1.x=SCREEN_WIDTH/2;
+    player1.y= SCREEN_HEIGHT*STARTING_OFFSET_1;
+    player2.x=SCREEN_WIDTH/2;
+    player2.y= SCREEN_HEIGHT*STARTING_OFFSET_2;
+
+    player1.inc_x=0;
+    player1.inc_y=1;
+
+    player2.inc_x=0;
+    player2.inc_y=-1;
+
+    for(int i=0; i < (SCREEN_WIDTH); i++){
+        for(int j=0; j<(SCREEN_HEIGHT); j++){
             board[i][j] = 0;
         }
     }
+    clearscreen();
     draw_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT * 0.03, RED);
-    if(CANT_PLAYERS==2){
-        printf(POINTS, player1.name, player1.points, player2.name, player2.points);
-    }else{
-        //printf(POINTS, player1.points);
-    }    
+    printf(POINTS, player1.name, player1.points, player2.name, player2.points);
+
 }
