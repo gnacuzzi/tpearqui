@@ -28,18 +28,15 @@ void exceptionDispatcher(int exception) {
 }
 
 zero_division() {
-	draw_string("\nerror: se lanzo una excepcion de division por zero\n");
-	draw_char('\n');
+	printf("\nerror: divide by zero exception\n");
 	print_regs();
-	draw_string("\nse reiniciara la consola");
-	draw_char('\n');
-	draw_char('\n');
+	printf("\nshell is restarting\n");
+	putchar('\n');
 }
 
 invalid_op_code() {
-	draw_string("\nerror: se lanzo una excepcion de operacion invalida\n");
+	printf("\nerror: invalid op code exception\n");
 	print_regs();
-	draw_string("\nse reiniciara la consola");
-	draw_char('\n');
-	draw_char('\n');
+	printf("\nshell is restarting\n");
+	putchar('\n');
 }

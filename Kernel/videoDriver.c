@@ -156,12 +156,6 @@ void draw_char(char c) {
 }
 
 
-void draw_string(const char* str) {
-    while (*str) {
-        draw_char(*str); 
-        str++;
-    }
-}
 
 void set_lettersize(int size){
     DEFAULT_LETTER_SIZE = size;
