@@ -4,12 +4,12 @@
 #include "include/syscall.h"
 #include "include/rand.h"
 
-static int CANT_PLAYERS= 1;
-static int SPEED= 1;
+static int CANT_PLAYERS=1;
+static int SPEED=1;
 
 static char board[SCREEN_WIDTH][SCREEN_HEIGHT]; //ver tema tamaño
 
-#define OUT_OF_BOUNDS(x, y) ((x) > SCREEN_WIDTH || (x) < 0 || (y) > SCREEN_HEIGHT || (y) < 0) 
+#define OUT_OF_BOUNDS(x, y) ((x) >= SCREEN_WIDTH || (x) <= 0 || (y) >= SCREEN_HEIGHT || (y) <= 0) 
 
 Player player1, player2;
 
@@ -25,6 +25,10 @@ void start_eliminator(){
         }
     }
     if(input == SPACEBAR){
+        if(CANT_PLAYERS == 1){
+            player1 = (Player) {SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_1, 0, 1, 0, PINK, "You"};
+            player2 = (Player) {SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_2, 0, -1, 0, LIGHT_GREEN, "Eliminator"};
+        }
         starting_screen();
     }else{
         settings();
@@ -33,21 +37,28 @@ void start_eliminator(){
 
 void settings(){
     clearscreen();
-    char input;
     printf(MSG_SPEED);
-    while((input = readchar()) != ENTER){
-        if(input >= '1' && input <= '3'){
-            putchar(input);
-            SPEED = ctoi(input);
+    while(1){
+        char speed[5];
+        scanf(speed);
+        if(strcmp(speed, "1") == 0 || strcmp(speed, "2") == 0 ||strcmp(speed, "3") == 0){
+            SPEED = ctoi(speed[0]);
+            break;
+        } else{
+            printf("Enter a number between 1 and 3 \n");
         }
     }
     putchar(ENTER);
 
     printf(MSG_PLAYERS);
-    while((input = readchar()) != ENTER){
-        if(input=='1' || input=='2'){
-            putchar(input);
-            CANT_PLAYERS = ctoi(input);
+    while(1){
+        char cant[5];
+        scanf(cant);
+        if(strcmp(cant, "1") == 0 || strcmp(cant, "2") == 0){
+            CANT_PLAYERS = ctoi(cant[0]);
+            break;
+        } else{
+            printf("Enter 1 or 2 \n");
         }
     }
     putchar(ENTER);    
@@ -61,9 +72,6 @@ void settings(){
         printf("2nd player's name: ");
         scanf(name2);
         player2 = (Player){SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_2, 0, -1, 0, LIGHT_GREEN, name2};
-    }else{
-        player1 = (Player) {SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_1, 0, 1, 0, PINK, "You"};
-        player2 = (Player) {SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_2, 0, -1, 0, LIGHT_GREEN, "Elimnator"};
     }
     start_eliminator();
 }
