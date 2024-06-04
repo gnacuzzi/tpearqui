@@ -169,7 +169,7 @@ int commandId(char* command){
 
 
 int main() {
-	printf("Wellcome to our shell! Write which module you want to use. To see ours modules write help\n");
+	printf("Welcome to our shell! Write which module you want to use. To see our modules write help\n");
 	printf("~$");
 	
 	char buffer[BUFFER_LENGTH] = {0}; 
