@@ -26,6 +26,7 @@ static void eliminator(char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], int c
 	}
 	start_eliminator();
 	clearscreen();
+	setlettersize(1);
 }
 
 static void invalidoperation(char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], int cantParams){

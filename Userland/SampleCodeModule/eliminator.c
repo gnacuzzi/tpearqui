@@ -16,6 +16,7 @@ Player player1, player2;
 
 void start_eliminator(){
     clearscreen();
+    setlettersize(2);
     printf(MSG_START, CANT_PLAYERS, SPEED);
     char input;
     while((input = readchar()) != SPACEBAR && input != ENTER){
@@ -310,8 +311,13 @@ void set_enviroment(){
             board[i][j] = 0;
         }
     }
-    clearscreen();
-    draw_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT * 0.03, RED);
+
+    for(int i=0; i < (SCREEN_WIDTH); i++){
+        for(int j=0; j<(SCREEN_HEIGHT*0.04); j++){
+            board[i][j] = 1;
+        }
+    }    clearscreen();
+    draw_rectangle(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT * 0.04, RED);
     printf(POINTS, player1.name, player1.points, player2.name, player2.points);
 
 }
