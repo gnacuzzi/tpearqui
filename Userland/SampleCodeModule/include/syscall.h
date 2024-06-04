@@ -15,7 +15,7 @@ void get_minutes(int * min);
 void get_hours(int * hours);
 
 
-setlettersize(int size);	
+void setlettersize(int size);	
 
 uint64_t * getRegs(uint64_t * regarr);
 

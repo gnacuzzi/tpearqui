@@ -21,7 +21,6 @@ void draw_char(char c);
 void draw_string(const char* str);
 void draw_rect(int x, int y, int width, int height, Color color);
 void clear_screen();
-static void* getPtrToPixel(uint16_t x, uint16_t y);
 void print_new_line(void);
 void set_lettersize(int size);
 

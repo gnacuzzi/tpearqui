@@ -58,7 +58,6 @@ static void time(char** parameters, int cantParams){
     get_seconds(&seconds);
     get_minutes(&minutes);
     get_hours(&hours); 
-	hours = (hours + 24 - 3) % 24;
     printf("%1x:%1x:%1x",hours,minutes,seconds); //el 1 para que se agregue un 0 adelante si es menor a 10
     printf("\n");
 }	

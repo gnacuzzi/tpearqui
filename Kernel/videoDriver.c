@@ -60,8 +60,10 @@ VBEInfoPtr VBE_mode_info = (VBEInfoPtr) 0x0000000000005C00;
 uint16_t cursor_x = 0;
 uint16_t cursor_y = 0;
 
-Color penColor = {255, 255, 255};
-Color backColor = {0, 0, 0};
+Color penColor = {255, 255, 255};//blanco
+Color backColor = {0, 0, 0};//negro
+
+static void* getPtrToPixel(uint16_t x, uint16_t y);
 
 static void* getPtrToPixel(uint16_t x, uint16_t y) {
     return (void*)(VBE_mode_info->framebuffer + 3 * (x + (y * (uint64_t)VBE_mode_info->width)));

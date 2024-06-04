@@ -4,7 +4,6 @@
 
  #define BUFFER_SIZE 256
  
-int get_control();
 int control = 0;
 
 static const char keyboard_matrix[256] = 

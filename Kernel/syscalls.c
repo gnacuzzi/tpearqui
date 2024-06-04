@@ -125,7 +125,6 @@ static void syscall_registers(uint64_t * buffer){
     for(int i = 0; i<17; i++){
             buffer[i] = regs[i];
         }
-    return buffer;
 }
 
 static int syscall_control(){
@@ -136,11 +135,7 @@ static void make_sound(uint64_t freq, uint64_t tick){
     if(freq > 0){
         beep(freq);
     }
-    //un hold casero
-    int initial_ticks = ticks_elapsed();
-    while(ticks_elapsed() - initial_ticks < tick){
-        _hlt();
-    }
+    wait_time(tick);
     if(freq > 0)
         stop_beep();
 }
