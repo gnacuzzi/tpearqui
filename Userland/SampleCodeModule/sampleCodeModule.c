@@ -11,7 +11,7 @@
 #define PARAMETERS_LENGTH 256
 
 
-static void dividebyzero(char** parameters, int cantParams){
+static void dividebyzero(char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], int cantParams){
 	if(cantParams != 0){
 		printf("DivideByZero doesn't need parameters\n");
 		return;
@@ -19,7 +19,7 @@ static void dividebyzero(char** parameters, int cantParams){
 	dividebyzeroexception();
 }
 
-static void eliminator(char** parameters, int cantParams){
+static void eliminator(char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], int cantParams){
 	if(cantParams != 0){
 		printf("Eliminator doesn't need parameters\n");
 		return;
@@ -28,7 +28,7 @@ static void eliminator(char** parameters, int cantParams){
 	clearscreen();
 }
 
-static void invalidoperation(char** parameters, int cantParams){
+static void invalidoperation(char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], int cantParams){
 	if(cantParams != 0){
 		printf("InvalidOperation doesn't need parameters\n");
 		return;
@@ -37,18 +37,19 @@ static void invalidoperation(char** parameters, int cantParams){
 	invalidoperationexception();
 }
 
-static void lettersize(char** parameters, int cantParams){
+static void lettersize(char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], int cantParams){
+	int size = atoi(parameters[0]);
 	if(cantParams != 1){
 		printf("You must insert ONE parameter indicating the letter size you desire\n");
-	}else if (parameters[0] > 3 || parameters[0] < 1){
+	}else if (size > 3 || size < 1){
 		printf("The letter size must be a number between 1 and 3\n");
 	}else{
-		setlettersize(parameters[0]);	
+		setlettersize(size);	
 	}
 	return;
 }
 
-static void time(char** parameters, int cantParams){
+static void time(char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], int cantParams){
 	if(cantParams != 0){
 		printf("time doesn't need parameters\n");
 		return;
@@ -62,7 +63,7 @@ static void time(char** parameters, int cantParams){
     printf("\n");
 }	
 
-static void clear(char** parameters, int cantParams){
+static void clear(char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], int cantParams){
 	if(cantParams != 0){
 		printf("Clear doesn't need parameters\n");
 		return;
@@ -70,7 +71,7 @@ static void clear(char** parameters, int cantParams){
 	clearscreen();
 }
 
-static void help(char** parameters, int cantParams){
+static void help(char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], int cantParams){
 	if(cantParams != 0){
 		printf("Help doesn't need parameters\n");
 		return;
@@ -90,7 +91,7 @@ static void help(char** parameters, int cantParams){
 
 static char * regs[] = {"RAX","RBX","RCX","RDX","RSI","RDI","RBP","R8","R9","R10","R11","R12","R13","R14","R15", "RSP","RIP"};
 
-static void registers(char **parameters, int cantParams){
+static void registers(char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], int cantParams){
 	if(cantParams != 0){
 		printf("Registers doesn't need parameters\n");
 		return;
@@ -108,7 +109,7 @@ static void registers(char **parameters, int cantParams){
 }
 
 static const char* allCommands[] = {"CLEAR", "DIVIDEBYZERO", "ELIMINATOR", "HELP", "INVALIDOPERATION","LETTERSIZE", "REGISTERS", "TIME"};
-static void (*commandsFunction[])(char ** parameters, int cantParams) = {clear, dividebyzero, eliminator, help, invalidoperation, lettersize, registers, time}; //funciones a hacer
+static void (*commandsFunction[])(char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], int cantParams) = {clear, dividebyzero, eliminator, help, invalidoperation, lettersize, registers, time}; //funciones a hacer
 
 int scanCommand(char* command, char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], char* buffer){
 	// buffer = "command arg1 arg2"
@@ -169,7 +170,7 @@ int commandId(char* command){
 
 int main() {
 	//clearscreen(); //lo saque porque sino no se me imprimia la excepcion
-	printf("Wellcome to StarShell! Write which module you want to use. To see ours modules write help\n");
+	printf("Wellcome to our shell! Write which module you want to use. To see ours modules write help\n");
 	printf("~$");
 	
 	char buffer[BUFFER_LENGTH] = {0}; 

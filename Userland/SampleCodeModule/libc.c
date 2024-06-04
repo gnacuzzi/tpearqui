@@ -36,7 +36,7 @@ void printf(const char * fmt, ...){
 
 static void va_printf(const char* fmt, va_list args){
     char buffer[MAX_CHARS] = {0};
-    char * aux = fmt;           //puntero
+    const char * aux = fmt;           //puntero
     while(*aux){
         if(*aux == '%'){
             aux++;
@@ -118,7 +118,7 @@ int itoa(int n, char* buffer, int base){
     return len;
 }
 
-int strtoi(char* s, char ** end){
+int strtoi(const char* s, const char ** end){
     int n=0;
     while (isnumber(*s)){
         n = n * 10 + (*s++) - '0';
@@ -174,4 +174,12 @@ int scanf(char* buffer){
         }
     }
     return -1;
+}
+
+int atoi(char* str){
+    int res = 0;
+    for (int i = 0; str[i] != '\0'; ++i)
+        res = res * 10 + str[i] - '0';
+
+    return res;
 }

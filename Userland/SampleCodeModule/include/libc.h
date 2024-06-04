@@ -15,7 +15,7 @@ void puts(const char * s);
 
 void printchars(char c, int n);
 
-int strtoi(char* s, char ** end);
+int strtoi(const char* s, const char ** end);
 
 int itoa(int n, char* buffer, int base);
 
@@ -30,5 +30,7 @@ char scanInput();
 int ctoi(char  s);
 
 int scanf(char* buffer);
+
+int atoi(char * str);
 
 #endif
