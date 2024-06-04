@@ -200,6 +200,7 @@ _syscallHandler:
 	mov al, 20h
 	out 20h, al
 
+	pop r9
 	mov rsp, rbp
 	popState
 	mov rax, [aux]
