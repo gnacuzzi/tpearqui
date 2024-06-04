@@ -21,11 +21,13 @@ void start_eliminator(){
     char input;
     while((input = readchar()) != SPACEBAR && input != ENTER){
         if(input == ESC){
+            CANT_PLAYERS=1;
+            SPEED=1;
             return;
         }
     }
     if(input == SPACEBAR){
-        if(CANT_PLAYERS == 1){
+        if(CANT_PLAYERS==1){
             player1 = (Player) {SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_1, 0, 1, 0, PINK, "You"};
             player2 = (Player) {SCREEN_WIDTH/2, SCREEN_HEIGHT*STARTING_OFFSET_2, 0, -1, 0, LIGHT_GREEN, "Eliminator"};
         }
