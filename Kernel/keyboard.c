@@ -17,18 +17,14 @@ static const char keyboard_matrix[256] =
            0,  0, 0,0,0,0,0,0,0,0,
             0,0,4,0,0,2,0,3,0,0,
             5,0,0,0,0,0,0,0,0,0
-            // 2: left arrow
-            // 3: right arrow
-            // 4: up arrow 
-            // 5: down arrow 
     };
-static char buff[BUFFER_SIZE] = {0}; //Defining a circular vector that we use as keyboard buffer
+static char buff[BUFFER_SIZE] = {0}; 
 
-static int first = 0; //First iterator. Points to the front of the buffer
-static int last = 0; // Second iterator. Points to the last element added
+static int first = 0; 
+static int last = 0; 
 static int cant_elems = 0; 
 
-char next(){ // returns the first element pushed into the buffer in cronological order
+char next(){ 
     if(cant_elems <= 0 ) {return -1;} 
     char out = buff[first];
     first++;
@@ -36,9 +32,9 @@ char next(){ // returns the first element pushed into the buffer in cronological
     return out;
 }
  
-void keyboard_handler(){ // Every time someone presses a key this function gets called and inserts into the circular buffer
+void keyboard_handler(){ 
     uint8_t key = get_key();
-    if(key <=0x79){ // 0x79 because its the code for the biggest 'press'. We do this to avoid getting the releas of a key into the buffer
+    if(key <=0x79){ 
         if (key == 29) {
             control = 1;
             get_regs_snap();
@@ -47,7 +43,7 @@ void keyboard_handler(){ // Every time someone presses a key this function gets 
         if (cant_elems == BUFFER_SIZE){
             return;
         }
-        if(last == BUFFER_SIZE) last = 0; // Reposition of both the first and last pointer
+        if(last == BUFFER_SIZE) last = 0; 
         if(first == BUFFER_SIZE) first  = 0;
         buff[last++] = keyboard_matrix[key];
         cant_elems++;
