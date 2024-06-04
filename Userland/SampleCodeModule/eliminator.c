@@ -7,7 +7,7 @@
 static int CANT_PLAYERS=1;
 static int SPEED=1;
 
-static char board[SCREEN_WIDTH][SCREEN_HEIGHT]; //ver tema tamaño
+static char board[SCREEN_WIDTH][SCREEN_HEIGHT]; //tamaño de la pantalla
 
 #define OUT_OF_BOUNDS(x, y) ((x) >= SCREEN_WIDTH || (x) <= 0 || (y) >= SCREEN_HEIGHT || (y) <= 0) 
 
@@ -186,7 +186,7 @@ set_enviroment();
             }
             break;
         }
-        //fijarse tema esc
+        
         if(analyseSituation()){
             return;
         }
@@ -250,7 +250,7 @@ void play2(){
                 }
                 break;  
         }
-        //fijarse tema esc
+        
         if(analyseSituation()){
             return;
         }

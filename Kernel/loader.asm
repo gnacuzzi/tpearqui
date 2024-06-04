@@ -10,7 +10,7 @@ loader:
 	call initializeKernelBinary	; Set up the kernel binary, and get thet stack address
 load_main:
 	call getStackBase	
-	mov rsp, rax				; Set up the stack with the returned address
+	mov rsp, rax				
 	call main
 hang:
 	cli

@@ -169,7 +169,6 @@ int commandId(char* command){
 
 
 int main() {
-	//clearscreen(); //lo saque porque sino no se me imprimia la excepcion
 	printf("Wellcome to our shell! Write which module you want to use. To see ours modules write help\n");
 	printf("~$");
 	

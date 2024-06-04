@@ -7,5 +7,5 @@ dividebyzeroexception:
     ret
 
 invalidoperationexception:
-	db	0xFF, 0xFF    ;chequear esto
+	db	0xFF, 0xFF    ; invalid opcode
     ret

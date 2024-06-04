@@ -85,19 +85,15 @@ uint64_t syscallDispatcher(uint64_t nr, uint64_t arg0, uint64_t arg1, uint64_t a
 
 
 static void syscall_read(uint64_t buffer){
-    //estoy asumiendo que siempre leo de entrada estandar
     ((char*) buffer)[0] = next();
 }
 
 static void syscall_write(uint32_t fd, char c){
-    //Color prevColor = getFontColor();
     if(fd == STDERR)
-        //setFontColor(ERROR_COLOR);
-        return; //pongo return por ahora porque no tenemos el tema font
+        return; 
     else if(fd != STDOUT)
         return;
     draw_char(c);
-    //setFontColor(prevColor);
 }
 
 static void syscall_clear(){

@@ -18,7 +18,6 @@ GLOBAL wait_delta
 
 read_char:
     mov rax, 0
-    ;mov rdi, 0
     int 80h
     ret
 

@@ -193,7 +193,7 @@ _syscallHandler:
 	mov rdx, rsi
 	mov rsi, rdi
 	mov rdi, rax
-	call syscallDispatcher
+	call syscallDispatcher ;reordenamos los registros
 	mov [aux], rax
 
 	; signal pic EOI (End of Interrupt)

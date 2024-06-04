@@ -134,7 +134,7 @@ get_regs_snap:
 	mov [regs+8*13], r14
 	mov [regs+8*14], r15
 	mov [regs+8*15], rsp	;RSP
-	mov rax, [rsp]   ; RSP contains the return adress, so we get the RIP
+	mov rax, [rsp]   		;RIP
 	mov [regs+8*16], rax
 	ret
 
