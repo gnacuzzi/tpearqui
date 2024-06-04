@@ -10,7 +10,7 @@ GLOBAL stop_beep
 GLOBAL get_regs_snap
 ;vectores
 GLOBAL regs
-GLOBAL _htl
+GLOBAL htl_lib
 
 section .text
 	
@@ -139,7 +139,7 @@ get_regs_snap:
 	ret
 
 
-_hlt:
+htl_lib:
 	sti
 	hlt
 	ret

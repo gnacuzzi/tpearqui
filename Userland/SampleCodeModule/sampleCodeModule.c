@@ -38,13 +38,12 @@ static void invalidoperation(char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH],
 }
 
 static void lettersize(char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], int cantParams){
-	int size = atoi(parameters[0]);
 	if(cantParams != 1){
 		printf("You must insert ONE parameter indicating the letter size you desire\n");
-	}else if (size > 3 || size < 1){
+	}else if (parameters[0][0] > 3 || parameters[0][0] < 1){
 		printf("The letter size must be a number between 1 and 3\n");
 	}else{
-		setlettersize(size);	
+		setlettersize(parameters[0][0]);	
 	}
 	return;
 }

@@ -29,7 +29,7 @@ void printf(const char * fmt, ...);
 void putchar(char c);
 void puts(const char * s);
 void printchars(char c, int n);
-int strtoi(char* s, char ** end);
+int strtoi(const char* s, const char ** end);
 int itoa(int n, char* buffer, int base);
 int isnumber(int ch);
 

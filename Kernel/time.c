@@ -18,6 +18,6 @@ int seconds_elapsed() {
 void wait_time(int delta){ 
 	int currentTicks = ticks;
 	while(ticks - currentTicks < delta){
-		_hlt();
+		htl_lib();
 	}
 }

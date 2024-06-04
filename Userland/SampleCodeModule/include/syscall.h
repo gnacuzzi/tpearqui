@@ -6,7 +6,7 @@
 
 void write(int fd, char c);
 
-uint8_t read_char(int fd);
+uint8_t read_char(char * buff);
 
 void clear_screen();
 
