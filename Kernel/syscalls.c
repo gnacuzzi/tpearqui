@@ -16,13 +16,13 @@
 #define HOURS 5
 #define LETTERSIZE 6
 #define REGISTERS 7
-#define CONTROL 8
 #define SOUND 9
 #define RECTANGLE 10
 #define TICKS 11
 #define WAIT 12
 
-extern const uint64_t regs[17];
+extern const uint64_t registers[18];
+extern const uint64_t capturedReg;
 
 static void syscall_write(uint32_t fd, char c);
 static void syscall_read( uint64_t buffer);
@@ -31,8 +31,7 @@ static void syscall_seconds(uint64_t arg0);
 static void syscall_minutes(uint64_t arg0);
 static void syscall_hours(uint64_t arg0);
 static void syscall_lettersize(int size);
-static void syscall_registers(uint64_t * buffer);
-static int syscall_control();
+static void syscall_registers(uint64_t * buffer, uint64_t * flag);
 static void make_sound(uint64_t freq, uint64_t time);
 static void draw_rectangle(uint16_t x, uint16_t y, uint16_t width, uint16_t height, uint32_t color);
 static uint64_t syscall_ticks();
@@ -62,10 +61,7 @@ uint64_t syscallDispatcher(uint64_t nr, uint64_t arg0, uint64_t arg1, uint64_t a
             syscall_lettersize((int) arg0);
             break;
         case REGISTERS:
-            syscall_registers((uint64_t *) arg0);
-            break;
-        case CONTROL:
-            return syscall_control();
+            syscall_registers((uint64_t *) arg0, (uint64_t *) arg1);
             break;
         case SOUND:
             make_sound(arg0, arg1);
@@ -117,14 +113,13 @@ static void syscall_lettersize(int size){
     set_lettersize(size);
 }
 
-static void syscall_registers(uint64_t * buffer){
-    for(int i = 0; i<17; i++){
-            buffer[i] = regs[i];
+static void syscall_registers(uint64_t * buffer, uint64_t * flag){
+    *flag = capturedReg;
+    if (capturedReg){
+        for(int i = 0; i<18; i++){
+            buffer[i] = registers[i];
         }
-}
-
-static int syscall_control(){
-    return get_control();
+    }
 }
 
 static void make_sound(uint64_t freq, uint64_t tick){

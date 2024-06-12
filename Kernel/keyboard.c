@@ -4,7 +4,6 @@
 
  #define BUFFER_SIZE 256
  
-int control = 0;
 
 static const char keyboard_matrix[256] = 
     {       
@@ -35,11 +34,6 @@ char next(){
 void keyboard_handler(){ 
     uint8_t key = get_key();
     if(key <=0x79){ 
-        if (key == 29) {
-            control = 1;
-            get_regs_snap();
-            return;
-        }
         if (cant_elems == BUFFER_SIZE){
             return;
         }
@@ -48,8 +42,4 @@ void keyboard_handler(){
         buff[last++] = keyboard_matrix[key];
         cant_elems++;
     }
-}
-
-int get_control(){
-    return control;
 }

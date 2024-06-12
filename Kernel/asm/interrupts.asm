@@ -25,6 +25,8 @@ EXTERN load_main
 
 
 GLOBAL exceptregs
+GLOBAL registers
+GLOBAL capturedReg
 
 
 SECTION .text
@@ -86,7 +88,7 @@ SECTION .text
 
 	; guardamos los registros en este orden: 
 	;RAX, RBX, RCX, RDX, RSI, RDI, RBP, R8, R9, R10, R11, R12, R13
-	; R14, R15, RSP,RIP
+	; R14, R15, RSP,RIP, RFLAGS
     mov [exceptregs+8*0],	rax
 	mov [exceptregs+8*1],	rbx
 	mov [exceptregs+8*2],	rcx
@@ -108,6 +110,8 @@ SECTION .text
 	mov [exceptregs+ 8*15], rax  ;rsp
 	mov rax, [rsp+15*8]
 	mov [exceptregs + 128], rax ;rip
+	mov rax, [rsp+15*9]
+	mov [exceptregs + 136], rax ;rflags
 
 	mov rdi, %1 ; pasaje de parametro
 	call exceptionDispatcher
@@ -156,8 +160,50 @@ _irq00Handler:
 
 ;Keyboard
 _irq01Handler:
-	irqHandlerMaster 1
+	pushState
+	mov rax, 0
+	in al, 0x60
+	cmp al, 0x1D ; ctrl key
+	jne no_control
 	
+	; saving an array of registers: RAX, RBX, RCX, RDX, RSI, RDI, RBP, RSP, R8, R9, R10, R11, R12, R13
+	; R14, R15, RIP
+	mov [registers + 0], rax
+    mov [registers + 8], rbx
+    mov [registers + 16], rcx
+    mov [registers + 24], rdx
+    mov [registers + 32], rsi
+	mov [registers + 40], rdi
+    mov [registers + 48], rbp
+    mov [registers + 64], r8
+    mov [registers + 72], r9
+    mov [registers + 80], r10
+    mov [registers + 88], r11
+    mov [registers + 96], r12
+    mov [registers + 104], r13
+    mov [registers + 112], r14
+    mov [registers + 120], r15
+
+	mov rax, rsp
+	add rax, 160			  ;fixing stack height so that rax value is RSP value.
+	mov [registers+ 56], rax  ;RSP
+
+	mov rax, [rsp+15*8]
+	mov [registers + 128], rax ;RIP
+
+	mov rax, [rsp+15*9]
+	mov [registers + 136], rax ;RFLAGS
+
+	mov byte [capturedReg], 1
+	jmp exit
+
+no_control:
+	cmp al, 0x9D	; checking if the key is a ctrl release
+	je exit
+
+	call keyboard_handler
+	jmp exit
+		
 exit:
 	; signal pic EOI (End of Interrupt)
 	mov al, 20h
@@ -224,4 +270,6 @@ haltcpu:
 
 SECTION .bss
 	aux resq 1
-	exceptregs resq 17	;registros para la excepcion
+	exceptregs resq 18	;registros para la excepcion
+	registers resq 18		;registros para el teclado
+	capturedReg resb 1		;flag para saber si se capturo un teclado

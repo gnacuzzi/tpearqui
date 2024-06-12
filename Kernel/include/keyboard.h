@@ -3,6 +3,5 @@
 
 void keyboard_handler();
 char next();
-int get_control();
 
 #endif

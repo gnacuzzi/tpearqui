@@ -9,8 +9,8 @@ void invalid_op_code();
 
 
 uint64_t reg_snap[REGS] = {0};      //valores de los registros
-static char * regs[] = {"RAX","RBX","RCX","RDX","RSI","RDI","RBP","R8","R9","R10","R11","R12","R13","R14","R15", "RSP","RIP"};
-extern const uint64_t exceptregs[17];
+static char * regs[] = {"RAX","RBX","RCX","RDX","RSI","RDI","RBP","R8","R9","R10","R11","R12","R13","R14","R15", "RSP","RIP", "RFLAGS"};
+extern const uint64_t exceptregs[18];
 
 void print_regs() {
 	for (int i = 0; i<REGS; i++){

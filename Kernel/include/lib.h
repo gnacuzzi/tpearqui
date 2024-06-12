@@ -2,7 +2,7 @@
 #define LIB_H
 
 #include <stdint.h>
-#define REGS 17 
+#define REGS 18 
 void * memset(void * destination, int32_t character, uint64_t length);
 void * memcpy(void * destination, const void * source, uint64_t length);
 
@@ -13,7 +13,6 @@ int get_min();
 int get_hour();
 void beep(uint64_t freq);
 void stop_beep();
-void get_regs_snap();
 void htl_lib();
 
 #endif

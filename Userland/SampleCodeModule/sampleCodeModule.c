@@ -89,7 +89,7 @@ static void help(char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], int cantPar
 	printf(manual);
 }
 
-static char * regs[] = {"RAX","RBX","RCX","RDX","RSI","RDI","RBP","R8","R9","R10","R11","R12","R13","R14","R15", "RSP","RIP"};
+static char * regs[] = {"RAX","RBX","RCX","RDX","RSI","RDI","RBP","R8","R9","R10","R11","R12","R13","R14","R15", "RSP","RIP", "RFLAGS"};
 
 static void registers(char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], int cantParams){
 	if(cantParams != 0){
@@ -98,8 +98,9 @@ static void registers(char parameters[MAX_PARAMETERS][PARAMETERS_LENGTH], int ca
 	}
 	int len = sizeof(regs)/sizeof(char *);
     uint64_t snapShot[len];
-    getRegs(snapShot);
-	if (get_control()){
+	uint64_t flag = 0;
+    getRegs(snapShot, &flag);
+	if (flag == 1){
 		for (int i = 0; i < len; i++){
         	printf("%s: 0x%x\n", regs[i], snapShot[i]);
 		}

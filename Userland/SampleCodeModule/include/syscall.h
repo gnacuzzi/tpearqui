@@ -17,9 +17,8 @@ void get_hours(int * hours);
 
 void setlettersize(int size);	
 
-uint64_t * getRegs(uint64_t * regarr);
+uint64_t * getRegs(uint64_t * regarr, uint64_t * flag);
 
-int get_control();
 
 void make_sound(uint64_t freq, uint64_t time);
 

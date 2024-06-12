@@ -56,11 +56,6 @@ getRegs:
     int 80h
     ret
 
-get_control:
-    mov rax, 8
-    int 80h
-    ret
-
 make_sound:
     mov rax, 9
     int 80h
