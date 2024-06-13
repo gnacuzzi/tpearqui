@@ -163,12 +163,12 @@ _irq01Handler:
 	pushState
 	mov rax, 0
 	in al, 0x60
-	cmp al, 0x1D ; ctrl key
+	cmp al, 0x1D ; ctrl 
 	jne no_control
 	
 	; saving an array of registers: RAX, RBX, RCX, RDX, RSI, RDI, RBP, R8, R9, R10, R11, R12, R13
 	; R14, R15, RSP, RIP, RFLAGS
-   mov [registers+8*1],	rbx
+   	mov [registers+8*1],	rbx
 	mov [registers+8*2],	rcx
 	mov [registers+8*3],	rdx
 	mov [registers+8*4],	rsi
@@ -184,7 +184,7 @@ _irq01Handler:
 	mov [registers+8*14], r15
 
 	mov rax, rsp
-	add rax, 160			  ;fixing stack height so that rax value is RSP value.
+	add rax, 160			  ;volvemos a antes de pushear los registros
 	mov [registers + 8*15], rax  ;RSP
 
 	mov rax, [rsp+15*8]
@@ -200,7 +200,7 @@ _irq01Handler:
 	jmp exit
 
 no_control:
-	cmp al, 0x9D	; checking if the key is a ctrl release
+	cmp al, 0x9D	
 	je exit
 
 	call keyboard_handler
