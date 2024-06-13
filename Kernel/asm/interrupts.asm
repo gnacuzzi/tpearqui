@@ -166,33 +166,35 @@ _irq01Handler:
 	cmp al, 0x1D ; ctrl key
 	jne no_control
 	
-	; saving an array of registers: RAX, RBX, RCX, RDX, RSI, RDI, RBP, RSP, R8, R9, R10, R11, R12, R13
-	; R14, R15, RIP
-	mov [registers + 0], rax
-    mov [registers + 8], rbx
-    mov [registers + 16], rcx
-    mov [registers + 24], rdx
-    mov [registers + 32], rsi
-	mov [registers + 40], rdi
-    mov [registers + 48], rbp
-    mov [registers + 64], r8
-    mov [registers + 72], r9
-    mov [registers + 80], r10
-    mov [registers + 88], r11
-    mov [registers + 96], r12
-    mov [registers + 104], r13
-    mov [registers + 112], r14
-    mov [registers + 120], r15
+	; saving an array of registers: RAX, RBX, RCX, RDX, RSI, RDI, RBP, R8, R9, R10, R11, R12, R13
+	; R14, R15, RSP, RIP, RFLAGS
+   mov [registers+8*1],	rbx
+	mov [registers+8*2],	rcx
+	mov [registers+8*3],	rdx
+	mov [registers+8*4],	rsi
+	mov [registers+8*5],	rdi
+	mov [registers+8*6],	rbp
+	mov [registers+8*7], r8
+	mov [registers+8*8], r9
+	mov [registers+8*9], r10
+	mov [registers+8*10], r11
+	mov [registers+8*11], r12
+	mov [registers+8*12], r13
+	mov [registers+8*13], r14
+	mov [registers+8*14], r15
 
 	mov rax, rsp
 	add rax, 160			  ;fixing stack height so that rax value is RSP value.
-	mov [registers+ 56], rax  ;RSP
+	mov [registers + 8*15], rax  ;RSP
 
 	mov rax, [rsp+15*8]
-	mov [registers + 128], rax ;RIP
+	mov [registers + 8*16], rax ;RIP
+
+	mov rax, [rsp + 14*8]	;RAX
+	mov [registers], rax
 
 	mov rax, [rsp+15*9]
-	mov [registers + 136], rax ;RFLAGS
+	mov [registers + 8*17], rax ;RFLAGS
 
 	mov byte [capturedReg], 1
 	jmp exit
